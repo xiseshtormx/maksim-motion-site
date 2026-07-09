@@ -1,0 +1,505 @@
+---
+import { Image } from "astro:assets";
+import maximPhoto from "../assets/maxim-ryzhikov.webp";
+import KairosLogo from "../components/KairosLogo.astro";
+import "../styles/global.css";
+
+const cards = [
+  { number: "01", title: "KAIROS ID", tag: "Motion identity", art: "brand" },
+  { number: "02", title: "PULSE", tag: "Kinetic type", art: "pulse" },
+  { number: "03", title: "PORTRAIT", tag: "Editorial cut", art: "portrait" },
+  { number: "04", title: "ORIGIN", tag: "Logo study", art: "grid" },
+  { number: "05", title: "TEMPO", tag: "Visual rhythm", art: "tempo" },
+];
+
+const scatterLetters = [
+  { char: "Д", x: -390, y: -120, z: -280, r: -20 },
+  { char: "В", x: 280, y: -180, z: 220, r: 17 },
+  { char: "И", x: -170, y: 210, z: -120, r: 12 },
+  { char: "Ж", x: 420, y: 80, z: -320, r: -14 },
+  { char: "Е", x: -340, y: 150, z: 150, r: 18 },
+  { char: "Н", x: 180, y: -230, z: -80, r: -19 },
+  { char: "И", x: 360, y: 190, z: 280, r: 9 },
+  { char: "Е", x: -90, y: -250, z: -240, r: -9 },
+];
+
+const services = [
+  { index: "01", title: "Монтаж", text: "Темп, драматургия и точность кадра." },
+  { index: "02", title: "Motion", text: "Типографика, графика и айдентика в движении." },
+  { index: "03", title: "Sound", text: "Звук, который собирает монтаж в единое целое." },
+];
+
+const archiveWorks = [
+  {
+    number: "01",
+    title: "Motion-айдентика",
+    type: "Logo / Type / Visual rhythm",
+    description: "Логотипы и графические системы, которые раскрывают характер бренда через движение.",
+    visual: "brand",
+  },
+  {
+    number: "02",
+    title: "Реклама и соцсети",
+    type: "Reels / Shorts / Ads",
+    description: "Плотный монтаж и точные акценты для форматов, где внимание решают первые секунды.",
+    visual: "signal",
+  },
+  {
+    number: "03",
+    title: "Визуальные истории",
+    type: "Story / Motion / Sound",
+    description: "Понятная драматургия, графика и звук, собранные в цельную последовательность кадров.",
+    visual: "story",
+  },
+];
+
+const processSteps = [
+  { number: "01", title: "Задача", text: "Определяем цель, аудиторию, площадку и нужное впечатление." },
+  { number: "02", title: "Направление", text: "Собираем визуальный язык, темп, типографику и референсы." },
+  { number: "03", title: "Продакшн", text: "Монтируем, анимируем, выстраиваем звук и ритм материала." },
+  { number: "04", title: "Финал", text: "Доводим детали и готовим версии под выбранные форматы." },
+];
+
+const contactEmail = "hello@kairos-motion.ru";
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Максим Рыжиков",
+  jobTitle: "Motion-дизайнер и видеомонтажёр",
+  email: `mailto:${contactEmail}`,
+  knowsAbout: [
+    "Motion design",
+    "Video editing",
+    "Kinetic typography",
+    "Sound design",
+    "Advertising video",
+  ],
+  brand: {
+    "@type": "Brand",
+    name: "KAIROS",
+  },
+};
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Максим Рыжиков — motion-дизайнер и видеомонтажёр. Рекламные ролики, motion-айдентика, контент для соцсетей, монтаж и звук под ключ." />
+    <meta name="author" content="Максим Рыжиков" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#0b0d0f" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:title" content="Максим Рыжиков — motion-дизайн и видеомонтаж | KAIROS" />
+    <meta property="og:description" content="Рекламные ролики, motion-айдентика и контент, которые удерживают внимание и усиливают бренд." />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Максим Рыжиков — motion-дизайн и видеомонтаж | KAIROS</title>
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
+    <script is:inline>document.documentElement.classList.add("js");</script>
+  </head>
+  <body>
+    <a class="skipLink" href="#main-content">Перейти к содержанию</a>
+    <div class="pageProgress" aria-hidden="true"><span></span></div>
+    <div class="pointerAura" aria-hidden="true"></div>
+    <div class="siteTimecode" aria-hidden="true"><i></i><span data-site-timecode>00:00:00:00</span></div>
+
+    <header class="siteHeader">
+      <a class="headerBrand" href="#top" aria-label="KAIROS — на главную">
+        <KairosLogo mode="compact" tone="light" />
+      </a>
+      <nav class="desktopNav" aria-label="Основная навигация">
+        <a href="#works">Направления</a><a href="#identity">Айдентика</a><a href="#about">О Максиме</a>
+      </nav>
+      <a class="headerContact magnetic" href="#contact">Обсудить проект <span>↗</span></a>
+      <button class="menuButton" type="button" aria-label="Открыть меню" aria-controls="mobile-menu" aria-expanded="false"><i></i><i></i></button>
+    </header>
+
+    <div class="mobileNav" id="mobile-menu" aria-hidden="true" inert>
+      <nav>
+        <a href="#works"><span>01</span>Направления</a>
+        <a href="#identity"><span>02</span>Айдентика</a>
+        <a href="#about"><span>03</span>О Максиме</a>
+        <a href="#contact"><span>04</span>Контакты</a>
+      </nav>
+      <p>MOTION DESIGN / VIDEO EDITING</p>
+    </div>
+
+    <main id="main-content">
+      <section class="hero" id="top">
+        <div class="heroGrid" aria-hidden="true"></div><div class="heroGlow" aria-hidden="true"></div>
+        <div class="heroMeta heroMetaTop"><span>Максим Рыжиков</span><span>Motion designer · Video editor</span></div>
+        <div class="heroStage" data-tilt>
+          <div class="heroCard">
+            <div class="heroCardGrid" aria-hidden="true"></div>
+            <div class="heroCardTop">
+              <span>KAIROS / ID–001</span>
+              <span>MOSCOW · 55.75° N</span>
+            </div>
+            <div class="heroCardLogo">
+              <KairosLogo mode="full" tone="light" />
+            </div>
+            <div class="heroCardOrbit" aria-hidden="true"><i></i><i></i></div>
+            <div class="heroCardBottom">
+              <span>MAXIM RYZHIKOV</span>
+              <span>TIME / RHYTHM / FORM</span>
+              <span>2026</span>
+            </div>
+            <div class="heroScan" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div class="heroStatement" data-reveal>
+          <div class="heroPitch">
+            <p>KAIROS / MOTION PRACTICE</p>
+            <h1>Монтаж и motion, которые держат внимание.</h1>
+            <span>Рекламные ролики, айдентика и контент для соцсетей — от структуры до финального звука.</span>
+          </div>
+          <div class="heroActions">
+            <a class="heroButton heroButtonPrimary magnetic" href="#works">Смотреть направления</a>
+            <a class="heroButton heroButtonSecondary magnetic" href="#contact">Обсудить задачу</a>
+          </div>
+        </div>
+        <div class="heroMeta heroMetaBottom"><span>EST. 2026</span><span>Scroll to enter</span></div>
+      </section>
+
+      <section class="manifesto">
+        <div class="manifestoLabel" data-reveal><span>01 / НАПРАВЛЕНИЕ</span><i></i></div>
+        <p class="manifestoText" data-reveal>Собираю <em>ритм</em>, изображение и звук в цельную работу, которую хочется досмотреть.</p>
+      </section>
+
+      <section class="workTunnel" id="works">
+        <div class="tunnelSticky">
+          <div class="tunnelHead"><p>KAIROS motion system</p><span><b class="tunnelCurrent">01</b> / 05</span></div>
+          <div class="cardFan" aria-label="Избранные направления работ">
+            {cards.map((card, index) => (
+              <article class={`workCard workCard--${card.art}`} data-card data-index={index}>
+                <div class="cardTop"><span>{card.number}</span><span>{card.tag}</span></div>
+                <div class="cardArt">
+                  {card.art === "brand" && (
+                    <div class="brandArt" aria-hidden="true">
+                      <KairosLogo mode="mark" tone="light" />
+                      <span>IDENTITY IN MOTION</span>
+                      <i></i>
+                    </div>
+                  )}
+                  {card.art === "portrait" && (
+                    <div class="editorialArt" aria-hidden="true">
+                      <span>CUT</span><strong>03</strong><i></i><small>FRAME / STORY</small>
+                    </div>
+                  )}
+                  {card.art === "grid" && (
+                    <div class="constructionArt" aria-hidden="true">
+                      <KairosLogo mode="mark" tone="blue" />
+                      <span class="constructionCircle constructionCircleOne"></span>
+                      <span class="constructionCircle constructionCircleTwo"></span>
+                      <i class="constructionAxis axisX"></i><i class="constructionAxis axisY"></i>
+                    </div>
+                  )}
+                  {card.art === "pulse" && (
+                    <div class="pulseArt" aria-hidden="true"><KairosLogo mode="mark" tone="light" /><div class="pulseBars">{Array.from({ length: 19 }).map((_, barIndex) => <i style={`--bar-height: ${8 + barIndex * 2}px; --bar-delay: ${barIndex * -70}ms`}></i>)}</div></div>
+                  )}
+                  {card.art === "tempo" && (
+                    <div class="tempoArt" aria-hidden="true"><span>24</span><strong>FPS</strong><div class="tempoOrbit"></div></div>
+                  )}
+                </div>
+                <h2>{card.title}</h2>
+              </article>
+            ))}
+          </div>
+          <div class="tunnelFoot"><p>Пять визуальных направлений.<br />Один авторский ритм.</p><div class="tunnelLine"><span></span></div></div>
+        </div>
+      </section>
+
+      <section class="scatterScene" aria-label="Движение">
+        <div class="scatterSticky">
+          <div class="scatterAside"><span>02 / MOTION</span><p>Смысл проявляется<br />в правильный момент.</p></div>
+          <span class="scatterClock" data-scatter-clock aria-hidden="true">00:00:00:00</span>
+          <h2 class="scatterWord" aria-label="Движение">
+            {scatterLetters.map((letter) => (
+              <span class="scatterLetter" data-scatter data-x={letter.x} data-y={letter.y} data-z={letter.z} data-r={letter.r}>{letter.char}</span>
+            ))}
+          </h2>
+          <div class="scatterCross" aria-hidden="true"><i></i></div>
+        </div>
+      </section>
+
+      <section class="identity" id="identity">
+        <div class="identityIntro">
+          <p data-reveal>03 / KAIROS IDENTITY</p>
+          <h2 data-reveal>Момент,<br />который становится знаком.</h2>
+          <p class="identityCopy" data-reveal>KAIROS — это точка, в которой кадр, звук и движение совпадают. Знак строится вокруг этой встречи.</p>
+        </div>
+        <div class="identityCanvas" data-logo-canvas>
+          <div class="identityGrid" aria-hidden="true"></div>
+          <div class="identityGeometry" aria-hidden="true">
+            <span class="geometryCircle geometryCircleOne"></span>
+            <span class="geometryCircle geometryCircleTwo"></span>
+            <span class="geometryCircle geometryCircleThree"></span>
+            <i class="geometryAxis geometryAxisX"></i>
+            <i class="geometryAxis geometryAxisY"></i>
+          </div>
+          <KairosLogo mode="mark" tone="blue" class="identityMark" />
+          <span>CONSTRUCTION / 01</span>
+        </div>
+        <div class="identityLockup" data-reveal>
+          <div class="lockupMeta"><span>PRIMARY LOCKUP</span><span>FORM FOLLOWS TIME</span></div>
+          <KairosLogo mode="full" tone="dark" class="identityFullLogo" />
+          <div class="lockupTicks" aria-hidden="true">{Array.from({ length: 24 }).map(() => <i></i>)}</div>
+        </div>
+      </section>
+
+      <section class="archive" aria-labelledby="archive-title">
+        <div class="archiveHeader" data-reveal>
+          <p>04 / FORMATS</p>
+          <h2 id="archive-title">Форматы, которые Макс<br />усиливает движением.</h2>
+          <span>Реклама / бренды / контент</span>
+        </div>
+
+        <div class="archiveGrid">
+          {archiveWorks.map((work) => (
+            <article class={`archiveCard archiveCard--${work.visual}`} data-reveal>
+              <div class="archiveVisual">
+                {work.visual === "brand" && (
+                  <div class="brandSystemVisual" aria-hidden="true">
+                    <KairosLogo mode="full" tone="light" />
+                    <span>BRAND MOTION / SYSTEM 01</span>
+                    <i class="brandHalo"></i>
+                  </div>
+                )}
+                {work.visual === "story" && (
+                  <div class="storyVisual" aria-hidden="true">
+                    <div class="storyFrame storyFrameOne"><span>01</span><strong>IDEA</strong></div>
+                    <div class="storyFrame storyFrameTwo"><span>02</span><strong>FORM</strong></div>
+                    <div class="storyFrame storyFrameThree"><span>03</span><strong>IMPACT</strong></div>
+                    <i></i>
+                  </div>
+                )}
+                {work.visual === "signal" && (
+                  <div class="signalVisual" aria-hidden="true">
+                    <strong>K</strong>
+                    <div>{Array.from({ length: 32 }).map((_, index) => <i style={`--signal-height: ${8 + index * 1.25}px; --signal-delay: ${index * -45}ms`}></i>)}</div>
+                    <span>00:24:12</span>
+                  </div>
+                )}
+                <span class="archiveNumber">{work.number}</span>
+              </div>
+              <div class="archiveContent">
+                <p>{work.type}</p>
+                <h3>{work.title}</h3>
+                <span>{work.description}</span>
+                <i>↗</i>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="services" aria-labelledby="services-title">
+        <div class="servicesHeader"><p>05 / WHAT I DO</p><h2 id="services-title">От сырого материала<br />до точного впечатления.</h2></div>
+        <div class="serviceTimeline">
+          <div class="timelineRuler" aria-hidden="true">{Array.from({ length: 17 }).map((_, index) => <i><span>{String(index * 2).padStart(2, "0")}</span></i>)}</div>
+          <div class="timelinePlayhead" aria-hidden="true"><i></i></div>
+          {services.map((service, index) => (
+            <article class="serviceTrack" data-reveal style={`--track: ${index}`}>
+              <span class="serviceIndex">{service.index}</span>
+              <div class="serviceInfo"><h3>{service.title}</h3><p>{service.text}</p></div>
+              <div class="serviceLane" aria-hidden="true">
+                <i class="timelineClip clipA"></i><i class="timelineClip clipB"></i><i class="timelineClip clipC"></i>
+              </div>
+              <i class="serviceArrow">↗</i>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="process" aria-labelledby="process-title">
+        <div class="processHeader" data-reveal>
+          <p>06 / PROCESS</p>
+          <h2 id="process-title">Понятный процесс.<br />Не шаблонный результат.</h2>
+        </div>
+        <div class="processTrack">
+          {processSteps.map((step) => (
+            <article class="processStep" data-reveal>
+              <span>{step.number}</span>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+              <i aria-hidden="true"></i>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="about" id="about">
+        <div class="aboutPortrait" data-reveal>
+          <Image src={maximPhoto} alt="Максим Рыжиков — motion-дизайнер и видеомонтажёр" widths={[560, 840, 1120]} sizes="(max-width: 900px) 100vw, 46vw" quality={80} loading="lazy" />
+          <div class="portraitFrame" aria-hidden="true"><span>REC</span><span>00:03:24:12</span></div>
+        </div>
+        <div class="aboutCopy" data-reveal>
+          <p>07 / THE AUTHOR</p><h2>Максим<br />Рыжиков</h2>
+          <p class="aboutLead">Видеомонтажёр и motion-дизайнер. Работаю с ритмом, графикой и звуком — от короткого формата до сложного многокамерного монтажа.</p>
+          <div class="aboutFacts"><span>Premiere Pro</span><span>After Effects</span><span>Photoshop</span><span>Audition</span></div>
+        </div>
+      </section>
+
+      <section class="contact" id="contact">
+        <div class="contactOrbit" aria-hidden="true"></div><p>Есть идея?</p><h2>Давайте придадим<br />ей движение.</h2>
+        <a class="contactLink magnetic" href={`mailto:${contactEmail}`}><span>Начать проект</span><i>↗</i></a>
+        <div class="contactDetails">
+          <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+          <span>В письме достаточно указать задачу, формат, сроки и приложить исходники.</span>
+        </div>
+        <footer><span>KAIROS © 2026</span><span>MOTION DESIGN / VIDEO EDITING</span><a href="#top">Наверх ↑</a></footer>
+      </section>
+    </main>
+
+    <script>
+      const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
+      const lerp = (from, to, progress) => from + (to - from) * progress;
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const progressBar = document.querySelector(".pageProgress span");
+      const aura = document.querySelector(".pointerAura");
+      const hero = document.querySelector(".hero");
+      const heroStage = document.querySelector(".heroStage");
+      const tunnel = document.querySelector(".workTunnel");
+      const tunnelCards = [...document.querySelectorAll("[data-card]")];
+      const tunnelCurrent = document.querySelector(".tunnelCurrent");
+      const tunnelLine = document.querySelector(".tunnelLine span");
+      const scatterScene = document.querySelector(".scatterScene");
+      const scatterLetters = [...document.querySelectorAll("[data-scatter]")];
+      const identityCanvas = document.querySelector("[data-logo-canvas]");
+      const servicesSection = document.querySelector(".services");
+      const timelinePlayhead = document.querySelector(".timelinePlayhead");
+      const siteTimecode = document.querySelector("[data-site-timecode]");
+      const scatterClock = document.querySelector("[data-scatter-clock]");
+      let pointerX = 0, pointerY = 0, rafPending = false;
+
+      function formatTimecode(totalFrames) {
+        const fps = 24;
+        const frames = Math.max(0, Math.floor(totalFrames));
+        const hours = Math.floor(frames / (fps * 3600));
+        const minutes = Math.floor(frames / (fps * 60)) % 60;
+        const seconds = Math.floor(frames / fps) % 60;
+        const frame = frames % fps;
+        return [hours, minutes, seconds, frame].map((part) => String(part).padStart(2, "0")).join(":");
+      }
+
+      function sectionProgress(element) {
+        if (!element) return 0;
+        const rect = element.getBoundingClientRect();
+        return clamp(-rect.top / Math.max(1, element.offsetHeight - window.innerHeight));
+      }
+
+      function updateScene() {
+        rafPending = false;
+        const scrollMax = document.documentElement.scrollHeight - window.innerHeight;
+        const pageProgress = scrollMax > 0 ? window.scrollY / scrollMax : 0;
+        if (progressBar) progressBar.style.transform = `scaleX(${pageProgress})`;
+        if (siteTimecode) siteTimecode.textContent = formatTimecode(pageProgress * 24 * 96);
+        if (!reducedMotion && hero && heroStage) {
+          const heroProgress = clamp(-hero.getBoundingClientRect().top / Math.max(1, hero.offsetHeight));
+          heroStage.style.setProperty("--hero-y", `${heroProgress * -90}px`);
+          heroStage.style.setProperty("--hero-scale", String(1 - heroProgress * 0.14));
+          heroStage.style.setProperty("--hero-opacity", String(1 - heroProgress * 0.72));
+          heroStage.style.setProperty("--rx", `${pointerY * -4}deg`);
+          heroStage.style.setProperty("--ry", `${pointerX * 5}deg`);
+        }
+        if (!reducedMotion && tunnel) {
+          const progress = sectionProgress(tunnel);
+          const spread = lerp(0.78, 1.18, Math.sin(progress * Math.PI));
+          tunnelCards.forEach((card, index) => {
+            const offset = index - (tunnelCards.length - 1) / 2;
+            const x = offset * Math.min(window.innerWidth * 0.16, 215) * spread;
+            const y = Math.abs(offset) * 20 - Math.sin(progress * Math.PI) * 42;
+            const z = -Math.abs(offset) * 165 + Math.sin(progress * Math.PI) * 150;
+            const rotateY = offset * -8 + (progress - 0.5) * offset * 7;
+            const rotateZ = offset * 2.2 * (1 - progress);
+            const endFlight = clamp((progress - 0.72) / 0.28);
+            card.style.transform = `translate3d(calc(-50% + ${x + offset * endFlight * 165}px), calc(-50% + ${y}px), ${z + endFlight * (130 - Math.abs(offset) * 28)}px) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`;
+          });
+          if (tunnelLine) tunnelLine.style.transform = `scaleX(${progress})`;
+          if (tunnelCurrent) tunnelCurrent.textContent = String(Math.min(5, Math.floor(progress * 5) + 1)).padStart(2, "0");
+        }
+        if (!reducedMotion && scatterScene) {
+          const progress = sectionProgress(scatterScene);
+          const assemble = clamp((progress - 0.08) / 0.58);
+          const release = clamp((progress - 0.78) / 0.22);
+          if (scatterClock) scatterClock.textContent = formatTimecode(progress * 24 * 12);
+          scatterLetters.forEach((letter, index) => {
+            const stagger = clamp(assemble * 1.22 - index * 0.025);
+            const x = Number(letter.dataset.x) * (1 - stagger) + (index - 3.5) * release * 90;
+            const y = Number(letter.dataset.y) * (1 - stagger) - release * 80;
+            const z = Number(letter.dataset.z) * (1 - stagger) + release * 280;
+            const rotate = Number(letter.dataset.r) * (1 - stagger) + release * (index % 2 ? 9 : -9);
+            letter.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotate(${rotate}deg)`;
+            letter.style.filter = `blur(${(1 - stagger) * 4 + release * 3}px)`;
+            letter.style.opacity = String(clamp(stagger * 1.4 + 0.16 - release * 0.45));
+          });
+        }
+        if (!reducedMotion && identityCanvas) {
+          const rect = identityCanvas.getBoundingClientRect();
+          const progress = clamp((window.innerHeight - rect.top) / (window.innerHeight + rect.height));
+          identityCanvas.style.setProperty("--logo-shift", `${(1 - progress) * 70}px`);
+          identityCanvas.style.setProperty("--logo-rotate", `${(1 - progress) * 2}deg`);
+          identityCanvas.style.setProperty("--logo-opacity", String(0.25 + progress * 0.75));
+          identityCanvas.style.setProperty("--logo-scale", String(0.86 + progress * 0.14));
+        }
+        if (!reducedMotion && servicesSection && timelinePlayhead) {
+          const rect = servicesSection.getBoundingClientRect();
+          const progress = clamp((window.innerHeight - rect.top) / (window.innerHeight + rect.height));
+          timelinePlayhead.style.left = `${8 + progress * 84}%`;
+        }
+      }
+
+      function requestUpdate() { if (!rafPending) { rafPending = true; requestAnimationFrame(updateScene); } }
+      window.addEventListener("scroll", requestUpdate, { passive: true });
+      window.addEventListener("resize", requestUpdate);
+      window.addEventListener("pointermove", (event) => {
+        pointerX = event.clientX / window.innerWidth - 0.5; pointerY = event.clientY / window.innerHeight - 0.5;
+        if (aura) { aura.style.setProperty("--x", `${event.clientX}px`); aura.style.setProperty("--y", `${event.clientY}px`); }
+        requestUpdate();
+      }, { passive: true });
+
+      const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
+        if (entry.isIntersecting) { entry.target.classList.add("isVisible"); observer.unobserve(entry.target); }
+      }), { threshold: 0.14, rootMargin: "0px 0px -5%" });
+      document.querySelectorAll("[data-reveal]").forEach((element) => observer.observe(element));
+
+      document.querySelectorAll(".magnetic").forEach((element) => {
+        element.addEventListener("pointermove", (event) => {
+          if (reducedMotion) return;
+          const rect = element.getBoundingClientRect();
+          element.style.transform = `translate(${(event.clientX - rect.left - rect.width / 2) * 0.12}px, ${(event.clientY - rect.top - rect.height / 2) * 0.12}px)`;
+        });
+        element.addEventListener("pointerleave", () => { element.style.transform = ""; });
+      });
+
+      const menuButton = document.querySelector(".menuButton");
+      const mobileNav = document.querySelector(".mobileNav");
+      const closeMenu = () => {
+        menuButton?.setAttribute("aria-expanded", "false");
+        menuButton?.setAttribute("aria-label", "Открыть меню");
+        mobileNav?.setAttribute("aria-hidden", "true");
+        if (mobileNav) mobileNav.inert = true;
+        document.body.classList.remove("menuOpen");
+      };
+      menuButton?.addEventListener("click", () => {
+        const open = menuButton.getAttribute("aria-expanded") === "true";
+        menuButton.setAttribute("aria-expanded", String(!open));
+        menuButton.setAttribute("aria-label", open ? "Открыть меню" : "Закрыть меню");
+        mobileNav?.setAttribute("aria-hidden", String(open));
+        if (mobileNav) mobileNav.inert = open;
+        document.body.classList.toggle("menuOpen", !open);
+      });
+      mobileNav?.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && menuButton?.getAttribute("aria-expanded") === "true") {
+          closeMenu();
+          menuButton.focus();
+        }
+      });
+      requestUpdate();
+    </script>
+  </body>
+</html>
