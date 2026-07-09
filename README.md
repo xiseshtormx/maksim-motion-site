@@ -1,43 +1,83 @@
-# Astro Starter Kit: Minimal
+# Maksim Motion Site
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Сайт-портфолио для motion-дизайнера.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Проект разрабатывается как современный landing page для презентации специалиста, его визуального стиля, услуг и работ.  
+Основная задача сайта — быстро объяснить, кто такой motion-дизайнер, чем он может быть полезен клиенту и как с ним связаться.
 
-## 🚀 Project Structure
+Проект сделан на Astro с фокусом на скорость загрузки, чистую структуру, адаптивность и визуальную подачу.
 
-Inside of your Astro project, you'll see the following folders and files:
+## О проекте
+
+Сайт создаётся для Максима Рыжикова — специалиста в сфере motion-дизайна.
+
+В отличие от обычной статичной страницы, проект должен работать как небольшая личная витрина:  
+показать стиль, создать доверие, выделить специалиста среди конкурентов и привести пользователя к контакту.
+
+Для меня этот проект является не просто учебной работой, а практическим frontend-кейсом: я работаю с реальным заказом, структурой страницы, визуальной подачей, адаптивной вёрсткой и подготовкой сайта к публикации.
+
+## Цели проекта
+
+- создать понятный и стильный сайт-портфолио;
+- показать личный бренд motion-дизайнера;
+- презентовать услуги и визуальный стиль;
+- сделать удобную структуру для пользователя;
+- подготовить сайт к публикации и дальнейшему развитию;
+- отработать Astro, компонентный подход и адаптивную вёрстку на реальном проекте.
+
+## Моя роль
+
+В проекте я занимаюсь frontend-разработкой и сборкой сайта:
+
+- продумываю структуру landing page;
+- реализую интерфейс на Astro;
+- работаю с HTML, CSS и JavaScript;
+- настраиваю адаптивную вёрстку;
+- оформляю визуальные блоки;
+- подключаю изображения и ассеты;
+- подготавливаю проект к размещению;
+- оформляю репозиторий как портфолио-кейс.
+
+## Стек
+
+- Astro
+- JavaScript
+- HTML5
+- CSS3
+- Git / GitHub
+
+## Что реализовано
+
+- базовая структура Astro-проекта;
+- главная страница сайта;
+- компонентная структура;
+- кастомные стили;
+- работа с изображениями и ассетами;
+- адаптивная основа;
+- подготовка проекта к дальнейшему деплою;
+- оформление проекта в GitHub.
+
+## Структура проекта
 
 ```text
 /
 ├── public/
+│   └── favicon.svg
+│
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+│   ├── assets/
+│   │   └── images and visual assets
+│   │
+│   ├── components/
+│   │   └── Astro components
+│   │
+│   ├── pages/
+│   │   └── index.astro
+│   │
+│   └── styles/
+│       └── global.css
+│
+├── astro.config.mjs
+├── package.json
+├── tsconfig.json
+└── README.md
