@@ -155,7 +155,7 @@ const structuredData = {
       </section>
 
       <section class="manifesto">
-        <div class="manifestoLabel" data-reveal><span>01 / НАПРАВЛЕНИЕ</span><i></i></div>
+        <div class="manifestoLabel" data-reveal><span>01 / НАПРАВЛЕНИЯ</span><i></i></div>
         <p class="manifestoText" data-reveal>Собираю <em>ритм</em>, изображение и звук в цельную работу, которую хочется досмотреть.</p>
       </section>
 
@@ -209,7 +209,7 @@ const structuredData = {
 
       <section class="scatterScene" aria-label="Движение">
         <div class="scatterSticky">
-          <div class="scatterAside"><span>02 / MOTION</span><p>Смысл проявляется<br />в правильный момент.</p></div>
+          <div class="scatterAside"><span>02 / ДВИЖЕНИЕ</span><p>Смысл проявляется<br />в правильный момент.</p></div>
           <span class="scatterClock" data-scatter-clock aria-hidden="true">00:00:00:00</span>
           <h2 class="scatterWord" aria-label="Движение">
             {scatterLetters.map((letter) => (
@@ -236,18 +236,18 @@ const structuredData = {
           <div class="styleBoardHead" aria-hidden="true"><span>МАКСИМ / ВИЗУАЛЬНЫЙ ЯЗЫК</span><span>03 / СИСТЕМА</span></div>
           <div class="styleLanguageBoard" aria-hidden="true">
             <section class="styleLanguageCard styleLanguageForm">
-              <span>01 / TYPOGRAPHY</span>
+              <span>01 / ТИПОГРАФИКА</span>
               <strong>FORM</strong>
               <em>MESSAGE FIRST</em>
               <i class="styleTypeSlash"></i>
             </section>
             <section class="styleLanguageCard styleLanguagePace">
-              <span>02 / EDIT</span>
+              <span>02 / МОНТАЖ</span>
               <strong>PACE</strong>
               <div class="stylePaceRail"><i></i><b></b></div>
             </section>
             <section class="styleLanguageCard styleLanguageRhythm">
-              <span>03 / MOTION</span>
+              <span>03 / МОУШЕН</span>
               <strong>RHYTHM</strong>
               <div class="stylePulseBars">{Array.from({ length: 12 }).map((_, index) => <i style={`--pulse:${index};--pulse-height:${7 + (index % 6) * 4}px`}></i>)}</div>
             </section>
@@ -263,7 +263,7 @@ const structuredData = {
 
       <section class="archive" id="projects" aria-labelledby="archive-title">
         <div class="archiveHeader" data-reveal>
-          <p>04 / SELECTED WORKS</p>
+          <p>04 / ИЗБРАННЫЕ РАБОТЫ</p>
           <h2 id="archive-title">Работы, которые<br />держат внимание.</h2>
           <span>Reels / Film / Motion</span>
         </div>
@@ -400,7 +400,7 @@ const structuredData = {
       </section>
 
       <section class="services" aria-labelledby="services-title">
-        <div class="servicesHeader"><p>05 / FORMATS</p><h2 id="services-title">Выберите формат.<br />Мы соберём всё остальное.</h2></div>
+        <div class="servicesHeader"><p>05 / ФОРМАТЫ</p><h2 id="services-title">Выберите формат.<br />Мы соберём всё остальное.</h2></div>
         <div class="serviceTimeline">
           <div class="timelineRuler" aria-hidden="true">{Array.from({ length: 17 }).map((_, index) => <i><span>{String(index * 2).padStart(2, "0")}</span></i>)}</div>
           <div class="timelinePlayhead" aria-hidden="true"><i></i></div>
@@ -419,7 +419,7 @@ const structuredData = {
 
       <section class="process" aria-labelledby="process-title">
         <div class="processHeader" data-reveal>
-          <p>06 / PROCESS</p>
+          <p>06 / ПРОЦЕСС</p>
           <h2 id="process-title">Понятный процесс.<br />Не шаблонный результат.</h2>
         </div>
         <div class="processTrack">
@@ -440,7 +440,7 @@ const structuredData = {
           <div class="portraitFrame" aria-hidden="true"><span>REC</span><span>00:03:24:12</span></div>
         </div>
         <div class="aboutCopy" data-reveal>
-          <p>07 / THE AUTHOR</p><h2>{siteData.owner.name}</h2>
+          <p>07 / АВТОР</p><h2>{siteData.owner.name}</h2>
           <p class="aboutLead">{siteData.about.lead}</p>
           <div class="aboutFacts">{siteData.about.tools.map((tool) => <span>{tool}</span>)}</div>
         </div>
