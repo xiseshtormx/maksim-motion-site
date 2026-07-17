@@ -110,7 +110,7 @@ const structuredData = {
       <nav class="desktopNav" aria-label="Основная навигация">
         <a href="#works">Направления</a><a href="#identity">Почерк</a><a href="#about">О Максиме</a>
       </nav>
-      <button class="headerContact magnetic" type="button" data-open-contact>Обсудить проект <span>↗</span></button>
+      <button class="headerContact magnetic" type="button" data-open-contact>Обсудить проект <span>↗︎</span></button>
       <button class="menuButton" type="button" aria-label="Открыть меню" aria-controls="mobile-menu" aria-expanded="false"><i></i><i></i></button>
     </header>
 
@@ -391,7 +391,7 @@ const structuredData = {
                 <h3>{work.title}</h3>
                 <span>{work.description}</span>
                 {work.link && (
-                  <a class="archiveCaseLink" href={work.link} target="_blank" rel="noreferrer">Открыть проект <i>↗</i></a>
+                  <a class="archiveCaseLink" href={work.link} target="_blank" rel="noreferrer">Открыть проект <i>↗︎</i></a>
                 )}
               </div>
             </article>
@@ -400,7 +400,7 @@ const structuredData = {
       </section>
 
       <section class="services" aria-labelledby="services-title">
-        <div class="servicesHeader"><p>05 / FORMATS</p><h2 id="services-title">Выберите формат.<br />Макс соберёт остальное.</h2></div>
+        <div class="servicesHeader"><p>05 / FORMATS</p><h2 id="services-title">Выберите формат.<br />Мы соберём всё остальное.</h2></div>
         <div class="serviceTimeline">
           <div class="timelineRuler" aria-hidden="true">{Array.from({ length: 17 }).map((_, index) => <i><span>{String(index * 2).padStart(2, "0")}</span></i>)}</div>
           <div class="timelinePlayhead" aria-hidden="true"><i></i></div>
@@ -411,7 +411,7 @@ const structuredData = {
               <div class="serviceLane" aria-hidden="true">
                 <i class="timelineClip clipA"></i><i class="timelineClip clipB"></i><i class="timelineClip clipC"></i>
               </div>
-              <i class="serviceArrow">↗</i>
+              <i class="serviceArrow">↗︎</i>
             </button>
           ))}
         </div>
@@ -448,7 +448,7 @@ const structuredData = {
 
       <section class="contact" id="contact">
         <div class="contactOrbit" aria-hidden="true"></div><p>{siteData.contact.eyebrow}</p><h2>{siteData.contact.title}</h2>
-        <button class="contactLink magnetic" type="button" data-open-contact><span>Начать проект</span><i>↗</i></button>
+        <button class="contactLink magnetic" type="button" data-open-contact><span>Начать проект</span><i>↗︎</i></button>
         <div class="contactDetails">
           <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
           <span>{siteData.contact.hint}</span>
@@ -516,7 +516,7 @@ const structuredData = {
           <div class="formFooter formWide">
             <button type="submit">
               <span class="formSubmitText"><strong>Отправить заявку</strong><small>Макс получит расчёт и ваш бриф</small></span>
-              <i>↗</i>
+              <i>↗︎</i>
             </button>
             <a href={`mailto:${contactEmail}`}><span>Можно написать напрямую</span>{contactEmail}</a>
           </div>
@@ -677,6 +677,40 @@ const structuredData = {
         });
       }
 
+      const enableGallerySwipe = (surface, onSwipe) => {
+        if (!surface) return;
+        let pointerId = null;
+        let startX = 0;
+        let startY = 0;
+        let didSwipe = false;
+
+        surface.addEventListener("pointerdown", (event) => {
+          pointerId = event.pointerId;
+          startX = event.clientX;
+          startY = event.clientY;
+          didSwipe = false;
+          surface.setPointerCapture?.(event.pointerId);
+        });
+
+        surface.addEventListener("pointerup", (event) => {
+          if (event.pointerId !== pointerId) return;
+          const distanceX = event.clientX - startX;
+          const distanceY = event.clientY - startY;
+          pointerId = null;
+          if (Math.abs(distanceX) < 46 || Math.abs(distanceX) <= Math.abs(distanceY)) return;
+          didSwipe = true;
+          onSwipe(distanceX < 0 ? 1 : -1);
+        });
+
+        surface.addEventListener("pointercancel", () => { pointerId = null; });
+        surface.addEventListener("click", (event) => {
+          if (!didSwipe) return;
+          event.preventDefault();
+          event.stopPropagation();
+          didSwipe = false;
+        }, true);
+      };
+
       const showcaseGalleryControllers = [...document.querySelectorAll("[data-showcase-gallery]")].map((gallery) => {
         const items = [...gallery.querySelectorAll("[data-showcase-item]")];
         const tabs = [...gallery.querySelectorAll("[data-showcase-tab]")];
@@ -717,6 +751,7 @@ const structuredData = {
         gallery.querySelector("[data-showcase-prev]")?.addEventListener("click", () => select(activeIndex - 1));
         gallery.querySelector("[data-showcase-next]")?.addEventListener("click", () => select(activeIndex + 1));
         soundButton?.addEventListener("click", () => { soundEnabled = !soundEnabled; sync(); });
+        enableGallerySwipe(gallery.querySelector(".projectShowcaseStage"), (direction) => select(activeIndex + direction));
 
         const showcaseObserver = new IntersectionObserver(([entry]) => {
           inView = entry.isIntersecting;
@@ -769,6 +804,7 @@ const structuredData = {
         gallery.querySelector("[data-reel-prev]")?.addEventListener("click", () => select(activeIndex - 1));
         gallery.querySelector("[data-reel-next]")?.addEventListener("click", () => select(activeIndex + 1));
         soundButton?.addEventListener("click", () => { soundEnabled = !soundEnabled; sync(); });
+        enableGallerySwipe(gallery.querySelector(".reelGalleryStage"), (direction) => select(activeIndex + direction));
 
         const galleryObserver = new IntersectionObserver(([entry]) => {
           inView = entry.isIntersecting;

@@ -203,7 +203,7 @@ img { display: block; max-width: 100%; }
 .reelGallery { position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;padding:clamp(20px,2.5vw,34px);color:var(--paper);background:radial-gradient(circle at 50% 46%,rgba(14,103,184,.34),transparent 43%),#080b0e; }
 .reelGallery::before { content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(243,239,229,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(243,239,229,.05) 1px,transparent 1px);background-size:46px 46px;mask-image:linear-gradient(to bottom,black,transparent 92%); }
 .reelGalleryMeta { position:relative;z-index:6;display:flex;justify-content:space-between;gap:20px;padding-left:clamp(58px,5vw,72px);color:rgba(243,239,229,.58);font-size:8px;font-weight:800;letter-spacing:.16em; }
-.reelGalleryStage { position:relative;z-index:2;flex:1;min-height:0;perspective:1100px; }
+.reelGalleryStage { position:relative;z-index:2;flex:1;min-height:0;perspective:1100px;touch-action:pan-y;user-select:none; }
 .reelGalleryItem { position:absolute;top:50%;left:50%;height:min(92%,420px);aspect-ratio:9/16;overflow:hidden;padding:0;border:1px solid rgba(243,239,229,.2);border-radius:clamp(13px,1.5vw,19px);background:#11161a;color:var(--paper);box-shadow:0 24px 60px rgba(0,0,0,.38);cursor:pointer;transition:transform 640ms var(--ease-out),opacity 420ms ease,filter 420ms ease; }
 .reelGalleryItem video { width:100%;height:100%;display:block;object-fit:cover;background:#101418;pointer-events:none; }
 .reelGalleryItem[data-reel-position="0"] { z-index:4;transform:translate(-50%,-50%) scale(1);opacity:1;filter:none; }
@@ -226,7 +226,7 @@ img { display: block; max-width: 100%; }
 .projectShowcaseHead>button { display:inline-flex;align-items:center;gap:7px;padding:6px 9px;border:1px solid rgba(243,239,229,.16);border-radius:999px;background:rgba(243,239,229,.04);color:rgba(243,239,229,.68);font:inherit;letter-spacing:.08em;cursor:pointer; }
 .projectShowcaseHead>button i { width:6px;height:6px;border-radius:50%;background:rgba(243,239,229,.3); }
 .projectShowcaseHead>button[aria-pressed="true"] i { background:#31d68a;box-shadow:0 0 0 4px rgba(49,214,138,.12); }
-.projectShowcaseStage { position:relative;z-index:2;flex:1;min-height:0;overflow:hidden;margin:clamp(14px,2vw,22px) 0 14px;border:1px solid rgba(243,239,229,.14);border-radius:clamp(16px,1.8vw,24px);background:#0b0f13;box-shadow:0 26px 56px rgba(0,0,0,.26); }
+.projectShowcaseStage { position:relative;z-index:2;flex:1;min-height:0;overflow:hidden;margin:clamp(14px,2vw,22px) 0 14px;border:1px solid rgba(243,239,229,.14);border-radius:clamp(16px,1.8vw,24px);background:#0b0f13;box-shadow:0 26px 56px rgba(0,0,0,.26);touch-action:pan-y;user-select:none; }
 .projectShowcaseSlide { position:absolute;inset:0;overflow:hidden;background:#0b0f13;opacity:0;transform:translateX(4%) scale(.985);pointer-events:none;transition:opacity 420ms ease,transform 620ms var(--ease-out); }
 .projectShowcaseSlide.isActive { z-index:2;opacity:1;transform:translateX(0) scale(1);pointer-events:auto; }
 .projectShowcaseMedia { width:100%;height:100%;display:block;object-fit:contain;padding:clamp(8px,1vw,14px);background:transparent; }
@@ -1056,6 +1056,8 @@ body.dialogOpen { overflow: hidden; }
   border-radius: 50%;
   font-size: 18px;
   font-style: normal;
+  font-family: Arial, sans-serif;
+  line-height: 1;
 }
 
 .js [data-reveal] { opacity: 0; transform: translateY(46px); transition: opacity 900ms var(--ease-out),transform 900ms var(--ease-out); }
@@ -1222,14 +1224,19 @@ body.dialogOpen { overflow: hidden; }
 
   .serviceTrack {
     min-height: 236px;
-    grid-template-columns: 34px 1fr 42px;
+    grid-template-columns: 28px minmax(0,1fr);
     align-content: center;
-    gap: 14px;
-    padding: 24px 16px;
+    gap: 12px;
+    padding: 24px 14px;
+  }
+
+  .serviceInfo {
+    min-width: 0;
+    padding-right: 48px;
   }
 
   .serviceInfo h3 {
-    font-size: 42px;
+    font-size: clamp(32px, 9.2vw, 42px);
   }
 
   .serviceInfo p {
@@ -1242,11 +1249,18 @@ body.dialogOpen { overflow: hidden; }
   }
 
   .serviceArrow {
-    grid-column: 3;
-    grid-row: 1;
+    position: absolute;
+    top: 28px;
+    right: 14px;
     width: 38px;
     height: 38px;
   }
+}
+
+.contactLink i,
+.formFooter button i {
+  font-family: Arial, sans-serif;
+  line-height: 1;
 }
 
 @media (max-width: 420px) {
