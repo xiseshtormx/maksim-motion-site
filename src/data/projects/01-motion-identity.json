@@ -1,0 +1,50 @@
+{
+  "order": 1,
+  "title": "Motion-айдентика",
+  "client": "KAIROS",
+  "year": 2026,
+  "type": "Logo / Type / Visual rhythm",
+  "description": "Логотипы и графические системы, которые раскрывают характер бренда.",
+  "visual": "brand",
+  "mediaFit": "cover",
+  "published": true,
+  "image": "/uploads/kairos-identity-board.webp",
+  "video": "",
+  "poster": "",
+  "showcase": [
+    {
+      "title": "Primary",
+      "label": "PRIMARY / LIGHT",
+      "image": "/uploads/identity/kairos-primary-light.webp",
+      "video": "",
+      "poster": "",
+      "alt": "Основная светлая версия логотипа KAIROS."
+    },
+    {
+      "title": "Monochrome",
+      "label": "MONOCHROME / DARK",
+      "image": "/uploads/identity/kairos-primary-dark.webp",
+      "video": "",
+      "poster": "",
+      "alt": "Монохромная версия логотипа KAIROS на тёмном фоне."
+    },
+    {
+      "title": "Construction",
+      "label": "MARK / CONSTRUCTION",
+      "image": "/uploads/identity/kairos-construction.webp",
+      "video": "",
+      "poster": "",
+      "alt": "Схема построения фирменного знака KAIROS."
+    },
+    {
+      "title": "System",
+      "label": "IDENTITY / SYSTEM",
+      "image": "/uploads/kairos-identity-board.webp",
+      "video": "",
+      "poster": "",
+      "alt": "Обзор визуальной системы KAIROS с вариантами знака и логотипа."
+    }
+  ],
+  "alt": "Логобук KAIROS: основной логотип, варианты знака, монохромная версия и схема построения.",
+  "link": ""
+}

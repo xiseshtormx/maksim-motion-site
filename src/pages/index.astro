@@ -1,15 +1,23 @@
 ---
 import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
 import maximPhoto from "../assets/maxim-ryzhikov.webp";
 import KairosLogo from "../components/KairosLogo.astro";
+import siteData from "../data/site.json";
 import "../styles/global.css";
 
 const cards = [
-  { number: "01", title: "KAIROS ID", tag: "Motion identity", art: "brand" },
-  { number: "02", title: "PULSE", tag: "Kinetic type", art: "pulse" },
-  { number: "03", title: "PORTRAIT", tag: "Editorial cut", art: "portrait" },
-  { number: "04", title: "ORIGIN", tag: "Logo study", art: "grid" },
-  { number: "05", title: "TEMPO", tag: "Visual rhythm", art: "tempo" },
+  { number: "01", title: "МОНТАЖ", tag: "Реклама / Story", description: "Собирает внимание в цельную историю.", art: "edit" },
+  { number: "02", title: "MOTION", tag: "Type / Graphics", description: "Добавляет бренду форму и движение.", art: "motion" },
+  { number: "03", title: "SHORTS", tag: "Vertical / Social", description: "Удерживает зрителя с первого кадра.", art: "shorts" },
+  { number: "04", title: "LOGO MOTION", tag: "Motion identity", description: "Превращает знак в узнаваемый характер.", art: "logo" },
+  { number: "05", title: "SOUND", tag: "Rhythm / Mix", description: "Связывает монтаж, ритм и эмоцию.", art: "sound" },
+];
+
+const filmPreviewScenes = [
+  { title: "Advertising", label: "AD FILM / 00:30", word: "IMPACT", art: "ad" },
+  { title: "Interview", label: "INTERVIEW / 06:00", word: "VOICE", art: "interview" },
+  { title: "Brand story", label: "BRAND FILM / 02:15", word: "STORY", art: "story" },
 ];
 
 const scatterLetters = [
@@ -23,61 +31,41 @@ const scatterLetters = [
   { char: "Е", x: -90, y: -250, z: -240, r: -9 },
 ];
 
-const services = [
-  { index: "01", title: "Монтаж", text: "Темп, драматургия и точность кадра." },
-  { index: "02", title: "Motion", text: "Типографика, графика и айдентика в движении." },
-  { index: "03", title: "Sound", text: "Звук, который собирает монтаж в единое целое." },
-];
-
-const archiveWorks = [
-  {
-    number: "01",
-    title: "Motion-айдентика",
-    type: "Logo / Type / Visual rhythm",
-    description: "Логотипы и графические системы, которые раскрывают характер бренда через движение.",
-    visual: "brand",
-  },
-  {
-    number: "02",
-    title: "Реклама и соцсети",
-    type: "Reels / Shorts / Ads",
-    description: "Плотный монтаж и точные акценты для форматов, где внимание решают первые секунды.",
-    visual: "signal",
-  },
-  {
-    number: "03",
-    title: "Визуальные истории",
-    type: "Story / Motion / Sound",
-    description: "Понятная драматургия, графика и звук, собранные в цельную последовательность кадров.",
-    visual: "story",
-  },
-];
-
-const processSteps = [
-  { number: "01", title: "Задача", text: "Определяем цель, аудиторию, площадку и нужное впечатление." },
-  { number: "02", title: "Направление", text: "Собираем визуальный язык, темп, типографику и референсы." },
-  { number: "03", title: "Продакшн", text: "Монтируем, анимируем, выстраиваем звук и ритм материала." },
-  { number: "04", title: "Финал", text: "Доводим детали и готовим версии под выбранные форматы." },
-];
-
-const contactEmail = "hello@kairos-motion.ru";
+const archiveWorks = (await getCollection("projects", ({ data }) => data.published))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map(({ data }) => ({ ...data, number: String(data.order).padStart(2, "0") }));
+const services = siteData.services;
+const processSteps = siteData.process;
+const contactEmail = siteData.owner.email;
+const canonicalUrl = Astro.site ? new URL("/", Astro.site).toString() : "";
+const socialImageUrl = canonicalUrl ? new URL(siteData.seo.socialImage, canonicalUrl).toString() : "";
 const structuredData = {
   "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Максим Рыжиков",
-  jobTitle: "Motion-дизайнер и видеомонтажёр",
-  email: `mailto:${contactEmail}`,
-  knowsAbout: [
-    "Motion design",
-    "Video editing",
-    "Kinetic typography",
-    "Sound design",
-    "Advertising video",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      name: "KAIROS",
+      alternateName: `${siteData.owner.name} — motion design`,
+      ...(canonicalUrl ? { url: canonicalUrl } : {}),
+    },
+    {
+      "@type": "Person",
+      name: siteData.owner.name,
+      jobTitle: siteData.owner.role,
+      email: `mailto:${contactEmail}`,
+      homeLocation: { "@type": "Place", name: siteData.owner.location },
+      knowsAbout: [
+        "Motion design",
+        "Video editing",
+        "Kinetic typography",
+        "Sound design",
+        "Advertising video",
+      ],
+      brand: { "@type": "Brand", name: "KAIROS" },
+      ...(canonicalUrl ? { url: canonicalUrl } : {}),
+      ...(socialImageUrl ? { image: socialImageUrl } : {}),
+    },
   ],
-  brand: {
-    "@type": "Brand",
-    name: "KAIROS",
-  },
 };
 ---
 
@@ -86,19 +74,28 @@ const structuredData = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Максим Рыжиков — motion-дизайнер и видеомонтажёр. Рекламные ролики, motion-айдентика, контент для соцсетей, монтаж и звук под ключ." />
-    <meta name="author" content="Максим Рыжиков" />
-    <meta name="robots" content="index, follow" />
+    <meta name="description" content={siteData.seo.description} />
+    <meta name="author" content={siteData.owner.name} />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-video-preview:-1" />
     <meta name="theme-color" content="#0b0d0f" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="ru_RU" />
-    <meta property="og:title" content="Максим Рыжиков — motion-дизайн и видеомонтаж | KAIROS" />
-    <meta property="og:description" content="Рекламные ролики, motion-айдентика и контент, которые удерживают внимание и усиливают бренд." />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:title" content={siteData.seo.title} />
+    <meta property="og:description" content={siteData.seo.socialDescription} />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+    {socialImageUrl && <meta property="og:image" content={socialImageUrl} />}
+    {socialImageUrl && <meta property="og:image:alt" content={`Шоурил ${siteData.owner.name} — motion design`} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={siteData.seo.title} />
+    <meta name="twitter:description" content={siteData.seo.socialDescription} />
+    {socialImageUrl && <meta name="twitter:image" content={socialImageUrl} />}
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>Максим Рыжиков — motion-дизайн и видеомонтаж | KAIROS</title>
+    <title>{siteData.seo.title}</title>
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
-    <script is:inline>document.documentElement.classList.add("js");</script>
+    <script is:inline>
+      document.documentElement.classList.add("js");
+    </script>
   </head>
   <body>
     <a class="skipLink" href="#main-content">Перейти к содержанию</a>
@@ -111,16 +108,16 @@ const structuredData = {
         <KairosLogo mode="compact" tone="light" />
       </a>
       <nav class="desktopNav" aria-label="Основная навигация">
-        <a href="#works">Направления</a><a href="#identity">Айдентика</a><a href="#about">О Максиме</a>
+        <a href="#works">Направления</a><a href="#identity">Почерк</a><a href="#about">О Максиме</a>
       </nav>
-      <a class="headerContact magnetic" href="#contact">Обсудить проект <span>↗</span></a>
+      <button class="headerContact magnetic" type="button" data-open-contact>Обсудить проект <span>↗</span></button>
       <button class="menuButton" type="button" aria-label="Открыть меню" aria-controls="mobile-menu" aria-expanded="false"><i></i><i></i></button>
     </header>
 
     <div class="mobileNav" id="mobile-menu" aria-hidden="true" inert>
       <nav>
         <a href="#works"><span>01</span>Направления</a>
-        <a href="#identity"><span>02</span>Айдентика</a>
+        <a href="#identity"><span>02</span>Почерк</a>
         <a href="#about"><span>03</span>О Максиме</a>
         <a href="#contact"><span>04</span>Контакты</a>
       </nav>
@@ -129,39 +126,32 @@ const structuredData = {
 
     <main id="main-content">
       <section class="hero" id="top">
-        <div class="heroGrid" aria-hidden="true"></div><div class="heroGlow" aria-hidden="true"></div>
-        <div class="heroMeta heroMetaTop"><span>Максим Рыжиков</span><span>Motion designer · Video editor</span></div>
-        <div class="heroStage" data-tilt>
-          <div class="heroCard">
-            <div class="heroCardGrid" aria-hidden="true"></div>
-            <div class="heroCardTop">
-              <span>KAIROS / ID–001</span>
-              <span>MOSCOW · 55.75° N</span>
-            </div>
-            <div class="heroCardLogo">
-              <KairosLogo mode="full" tone="light" />
-            </div>
-            <div class="heroCardOrbit" aria-hidden="true"><i></i><i></i></div>
-            <div class="heroCardBottom">
-              <span>MAXIM RYZHIKOV</span>
-              <span>TIME / RHYTHM / FORM</span>
-              <span>2026</span>
-            </div>
-            <div class="heroScan" aria-hidden="true"></div>
+        <div class="heroMeta heroMetaTop"><span>Showreel / 2026</span><span>Autoplay · Muted</span></div>
+        <div class="heroStage" aria-hidden="true">
+          <div class="heroMedia">
+            <img src="/media/kairos-hero-reel-poster.webp" alt="" />
+            <video autoplay muted loop playsinline preload="metadata" poster="/media/kairos-hero-reel-poster.webp" data-motion-video>
+              <source src="/media/kairos-hero-reel.webm" type="video/webm" />
+              <source src="/media/kairos-hero-reel.mp4" type="video/mp4" />
+            </video>
+            <i class="heroMediaShade"></i>
+            <i class="heroMediaTexture"></i>
           </div>
         </div>
-        <div class="heroStatement" data-reveal>
+        <div class="heroCurtain" aria-hidden="true"><i></i><i></i></div>
+        <div class="heroFrame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <div class="heroStatement">
           <div class="heroPitch">
-            <p>KAIROS / MOTION PRACTICE</p>
-            <h1>Монтаж и motion, которые держат внимание.</h1>
-            <span>Рекламные ролики, айдентика и контент для соцсетей — от структуры до финального звука.</span>
+            <p>{siteData.hero.eyebrow}</p>
+            <h1>{siteData.hero.title}</h1>
+            <span>{siteData.hero.description}</span>
           </div>
           <div class="heroActions">
-            <a class="heroButton heroButtonPrimary magnetic" href="#works">Смотреть направления</a>
-            <a class="heroButton heroButtonSecondary magnetic" href="#contact">Обсудить задачу</a>
+            <a class="heroButton heroButtonPrimary magnetic" href="#projects">Смотреть работы</a>
+            <button class="heroButton heroButtonSecondary magnetic" type="button" data-open-contact>Обсудить задачу</button>
           </div>
         </div>
-        <div class="heroMeta heroMetaBottom"><span>EST. 2026</span><span>Scroll to enter</span></div>
+        <div class="heroMeta heroMetaBottom"><span>PERM · 58.01° N</span><span>Scroll to explore</span></div>
       </section>
 
       <section class="manifesto">
@@ -171,25 +161,31 @@ const structuredData = {
 
       <section class="workTunnel" id="works">
         <div class="tunnelSticky">
-          <div class="tunnelHead"><p>KAIROS motion system</p><span><b class="tunnelCurrent">01</b> / 05</span></div>
-          <div class="cardFan" aria-label="Избранные направления работ">
+          <div class="tunnelHead"><p>MAXIM / DIRECTIONS</p><span><b class="tunnelCurrent">01</b> / 05</span></div>
+          <div class="cardFan" aria-label="Пять направлений работы Максима">
             {cards.map((card, index) => (
               <article class={`workCard workCard--${card.art}`} data-card data-index={index}>
                 <div class="cardTop"><span>{card.number}</span><span>{card.tag}</span></div>
                 <div class="cardArt">
-                  {card.art === "brand" && (
-                    <div class="brandArt" aria-hidden="true">
-                      <KairosLogo mode="mark" tone="light" />
-                      <span>IDENTITY IN MOTION</span>
-                      <i></i>
+                  {card.art === "edit" && (
+                    <div class="editArt" aria-hidden="true">
+                      <div class="editRail">{Array.from({ length: 6 }).map((_, frameIndex) => <i style={`--frame:${frameIndex}`}></i>)}</div>
+                      <i class="editPlayhead"></i><strong>00:24:12</strong><span>STORY / PACE / CUT</span>
                     </div>
                   )}
-                  {card.art === "portrait" && (
-                    <div class="editorialArt" aria-hidden="true">
-                      <span>CUT</span><strong>03</strong><i></i><small>FRAME / STORY</small>
+                  {card.art === "motion" && (
+                    <div class="motionDirectionArt" aria-hidden="true">
+                      <strong data-text="MOVE">MOVE</strong><span>TYPE / GRAPHICS / FORM</span><i></i>
                     </div>
                   )}
-                  {card.art === "grid" && (
+                  {card.art === "shorts" && (
+                    <div class="shortsArt" aria-hidden="true">
+                      <div class="shortFrame shortFrameOne"><span>01</span><strong>9:16</strong></div>
+                      <div class="shortFrame shortFrameTwo"><span>02</span><strong>PLAY</strong></div>
+                      <div class="shortFrame shortFrameThree"><span>03</span><strong>LOOP</strong></div>
+                    </div>
+                  )}
+                  {card.art === "logo" && (
                     <div class="constructionArt" aria-hidden="true">
                       <KairosLogo mode="mark" tone="blue" />
                       <span class="constructionCircle constructionCircleOne"></span>
@@ -197,18 +193,17 @@ const structuredData = {
                       <i class="constructionAxis axisX"></i><i class="constructionAxis axisY"></i>
                     </div>
                   )}
-                  {card.art === "pulse" && (
-                    <div class="pulseArt" aria-hidden="true"><KairosLogo mode="mark" tone="light" /><div class="pulseBars">{Array.from({ length: 19 }).map((_, barIndex) => <i style={`--bar-height: ${8 + barIndex * 2}px; --bar-delay: ${barIndex * -70}ms`}></i>)}</div></div>
-                  )}
-                  {card.art === "tempo" && (
-                    <div class="tempoArt" aria-hidden="true"><span>24</span><strong>FPS</strong><div class="tempoOrbit"></div></div>
+                  {card.art === "sound" && (
+                    <div class="soundArt" aria-hidden="true">
+                      <strong>SOUND</strong><div class="soundBars">{Array.from({ length: 21 }).map((_, barIndex) => <i style={`--bar-height:${10 + (barIndex % 6) * 7}px;--bar-delay:${barIndex * 32}ms`}></i>)}</div><span>SYNC / MIX / IMPACT</span>
+                    </div>
                   )}
                 </div>
-                <h2>{card.title}</h2>
+                <div class="cardCopy"><h2>{card.title}</h2><p>{card.description}</p></div>
               </article>
             ))}
           </div>
-          <div class="tunnelFoot"><p>Пять визуальных направлений.<br />Один авторский ритм.</p><div class="tunnelLine"><span></span></div></div>
+          <div class="tunnelFoot"><p>Пять направлений работы.<br />Один авторский ритм.</p><div class="tunnelLine"><span></span></div></div>
         </div>
       </section>
 
@@ -225,71 +220,179 @@ const structuredData = {
         </div>
       </section>
 
-      <section class="identity" id="identity">
+      <section class="identity" id="identity" aria-labelledby="identity-title">
         <div class="identityIntro">
-          <p data-reveal>03 / KAIROS IDENTITY</p>
-          <h2 data-reveal>Момент,<br />который становится знаком.</h2>
-          <p class="identityCopy" data-reveal>KAIROS — это точка, в которой кадр, звук и движение совпадают. Знак строится вокруг этой встречи.</p>
-        </div>
-        <div class="identityCanvas" data-logo-canvas>
-          <div class="identityGrid" aria-hidden="true"></div>
-          <div class="identityGeometry" aria-hidden="true">
-            <span class="geometryCircle geometryCircleOne"></span>
-            <span class="geometryCircle geometryCircleTwo"></span>
-            <span class="geometryCircle geometryCircleThree"></span>
-            <i class="geometryAxis geometryAxisX"></i>
-            <i class="geometryAxis geometryAxisY"></i>
+          <p data-reveal>03 / VISUAL LANGUAGE</p>
+          <h2 id="identity-title" data-reveal>Смысл — первым.<br />Движение — в точку.</h2>
+          <p class="identityCopy" data-reveal>Живой кадр, крупная типографика и понятная motion-графика работают вместе — чтобы мысль считывалась быстро, а ролик хотелось досмотреть.</p>
+          <div class="identityTraits" data-reveal>
+            <span><b>TYPE</b>крупно</span>
+            <span><b>CUT</b>точно</span>
+            <span><b>MOTION</b>по делу</span>
           </div>
-          <KairosLogo mode="mark" tone="blue" class="identityMark" />
-          <span>CONSTRUCTION / 01</span>
         </div>
-        <div class="identityLockup" data-reveal>
-          <div class="lockupMeta"><span>PRIMARY LOCKUP</span><span>FORM FOLLOWS TIME</span></div>
-          <KairosLogo mode="full" tone="dark" class="identityFullLogo" />
-          <div class="lockupTicks" aria-hidden="true">{Array.from({ length: 24 }).map(() => <i></i>)}</div>
+        <div class="identityCanvas styleCanvas" data-style-canvas role="img" aria-label="Визуальный язык Максима: форма, темп монтажа и ритм motion-графики">
+          <div class="styleGrid" aria-hidden="true"></div>
+          <div class="styleBoardHead" aria-hidden="true"><span>MAXIM / MOTION LANGUAGE</span><span>03 / SYSTEM</span></div>
+          <div class="styleLanguageBoard" aria-hidden="true">
+            <section class="styleLanguageCard styleLanguageForm">
+              <span>01 / TYPOGRAPHY</span>
+              <strong>FORM</strong>
+              <em>MESSAGE FIRST</em>
+              <i class="styleTypeSlash"></i>
+            </section>
+            <section class="styleLanguageCard styleLanguagePace">
+              <span>02 / EDIT</span>
+              <strong>PACE</strong>
+              <div class="stylePaceRail"><i></i><b></b></div>
+            </section>
+            <section class="styleLanguageCard styleLanguageRhythm">
+              <span>03 / MOTION</span>
+              <strong>RHYTHM</strong>
+              <div class="stylePulseBars">{Array.from({ length: 12 }).map((_, index) => <i style={`--pulse:${index};--pulse-height:${7 + (index % 6) * 4}px`}></i>)}</div>
+            </section>
+          </div>
+          <span class="styleSweep" aria-hidden="true"></span>
+          <div class="styleTimeline" aria-hidden="true">
+            <div>{Array.from({ length: 18 }).map((_, index) => <i class={index % 4 === 0 ? "isMajor" : undefined}></i>)}</div>
+            <span class="stylePlayhead"></span>
+          </div>
+          <span class="styleCanvasLabel">FORM / PACE / RHYTHM</span>
         </div>
       </section>
 
-      <section class="archive" aria-labelledby="archive-title">
+      <section class="archive" id="projects" aria-labelledby="archive-title">
         <div class="archiveHeader" data-reveal>
-          <p>04 / FORMATS</p>
-          <h2 id="archive-title">Форматы, которые Макс<br />усиливает движением.</h2>
-          <span>Реклама / бренды / контент</span>
+          <p>04 / SELECTED WORKS</p>
+          <h2 id="archive-title">Работы, которые<br />держат внимание.</h2>
+          <span>Reels / Film / Motion</span>
         </div>
 
         <div class="archiveGrid">
           {archiveWorks.map((work) => (
-            <article class={`archiveCard archiveCard--${work.visual}`} data-reveal>
-              <div class="archiveVisual">
-                {work.visual === "brand" && (
-                  <div class="brandSystemVisual" aria-hidden="true">
-                    <KairosLogo mode="full" tone="light" />
-                    <span>BRAND MOTION / SYSTEM 01</span>
-                    <i class="brandHalo"></i>
+            <article class={`archiveCard archiveCard--${work.visual} archiveCard--fit-${work.mediaFit}`} data-reveal>
+              <div class="archiveVisual" data-project-media>
+                {work.showcase.length ? (
+                  <div class={`projectShowcase projectShowcase--${work.visual}`} data-showcase-gallery>
+                    <div class="projectShowcaseHead">
+                      <span>{work.visual === "brand" ? "IDENTITY / SYSTEM" : "16:9 / FULL FORMAT"}</span>
+                      {work.showcase.some((item) => item.video) && <button type="button" data-showcase-sound aria-label="Включить звук" aria-pressed="false"><i></i><span>Звук выкл.</span></button>}
+                      <span data-showcase-counter>01 / {String(work.showcase.length).padStart(2, "0")}</span>
+                    </div>
+                    <div class="projectShowcaseStage">
+                      {work.showcase.map((item, index) => (
+                        <div class={`projectShowcaseSlide${index === 0 ? " isActive" : ""}`} data-showcase-item aria-hidden={index === 0 ? "false" : "true"}>
+                          {item.video ? (
+                            <video class="projectShowcaseMedia" muted loop playsinline preload={index === 0 ? "metadata" : "none"} poster={item.poster || undefined} data-showcase-video aria-label={item.alt || item.title}>
+                              <source src={item.video} />
+                            </video>
+                          ) : item.image ? (
+                            <img class="projectShowcaseMedia" src={item.image} alt={item.alt || item.title} loading="lazy" decoding="async" />
+                          ) : (
+                            <div class="projectShowcaseBlank" aria-hidden="true"><i></i><i></i><i></i></div>
+                          )}
+                          <div class="projectShowcaseCaption"><span>{item.label || work.type}</span><strong>{item.title}</strong></div>
+                        </div>
+                      ))}
+                    </div>
+                    <div class="projectShowcaseControls">
+                      <button type="button" data-showcase-prev aria-label="Предыдущий материал">←</button>
+                      <div class="projectShowcaseTabs">
+                        {work.showcase.map((item, index) => (
+                          <button type="button" data-showcase-tab data-showcase-index={index} aria-label={`Показать «${item.title}»`} aria-pressed={index === 0 ? "true" : "false"}><span>{String(index + 1).padStart(2, "0")}</span><b>{item.title}</b></button>
+                        ))}
+                      </div>
+                      <button type="button" data-showcase-next aria-label="Следующий материал">→</button>
+                    </div>
                   </div>
-                )}
-                {work.visual === "story" && (
-                  <div class="storyVisual" aria-hidden="true">
-                    <div class="storyFrame storyFrameOne"><span>01</span><strong>IDEA</strong></div>
-                    <div class="storyFrame storyFrameTwo"><span>02</span><strong>FORM</strong></div>
-                    <div class="storyFrame storyFrameThree"><span>03</span><strong>IMPACT</strong></div>
-                    <i></i>
+                ) : work.clips.length ? (
+                  <div class="reelGallery" data-reel-gallery>
+                    <div class="reelGalleryMeta"><span>VERTICAL / REELS</span><span data-reel-counter>01 / {String(work.clips.length).padStart(2, "0")}</span></div>
+                    <div class="reelGalleryStage">
+                      {work.clips.map((clip, index) => (
+                        <button
+                          class="reelGalleryItem"
+                          type="button"
+                          data-reel-item
+                          data-reel-index={index}
+                          data-reel-position={index === 0 ? "0" : index === 1 ? "1" : "-1"}
+                          aria-label={`Показать ролик «${clip.title}»`}
+                          aria-pressed={index === 0 ? "true" : "false"}
+                        >
+                          <video muted loop playsinline preload={index === 0 ? "metadata" : "none"} poster={clip.poster || undefined} data-gallery-video aria-label={clip.alt || clip.title}>
+                            <source src={clip.video} />
+                          </video>
+                          <span class="reelGalleryCaption"><b>{String(index + 1).padStart(2, "0")}</b><em>{clip.title}</em></span>
+                        </button>
+                      ))}
+                    </div>
+                    <div class="reelGalleryControls">
+                      <button type="button" data-reel-prev aria-label="Предыдущий ролик">←</button>
+                      <button class="reelSoundToggle" type="button" data-reel-sound aria-label="Включить звук" aria-pressed="false"><i></i><span>Звук выкл.</span></button>
+                      <button type="button" data-reel-next aria-label="Следующий ролик">→</button>
+                    </div>
                   </div>
-                )}
-                {work.visual === "signal" && (
-                  <div class="signalVisual" aria-hidden="true">
-                    <strong>K</strong>
-                    <div>{Array.from({ length: 32 }).map((_, index) => <i style={`--signal-height: ${8 + index * 1.25}px; --signal-delay: ${index * -45}ms`}></i>)}</div>
-                    <span>00:24:12</span>
+                ) : work.video ? (
+                  <video class="archiveMedia" muted loop playsinline preload="metadata" poster={work.poster || undefined} data-project-video aria-label={work.alt || `${work.title} — проект ${siteData.owner.name}`}>
+                    <source src={work.video} />
+                  </video>
+                ) : work.image ? (
+                  <img class="archiveMedia" src={work.image} alt={work.alt || `${work.title} — проект ${siteData.owner.name}`} loading="lazy" decoding="async" />
+                ) : work.visual === "brand" ? (
+                  <div class="casePreview casePreviewIdentity" aria-hidden="true">
+                    <div class="casePreviewTop"><span>IDENTITY / 01</span><span>00:08:12</span></div>
+                    <div class="identityMomentGrid">
+                      <div class="identityMoment identityMomentMark"><KairosLogo mode="mark" tone="light" /><span>MARK / REVEAL</span></div>
+                      <div class="identityMoment identityMomentType"><strong>FORM</strong><span>TYPE / MOTION</span></div>
+                      <div class="identityMoment identityMomentPulse"><strong>K</strong><div>{Array.from({ length: 9 }).map((_, index) => <i style={`--moment-bar:${16 + (index % 5) * 9}px`}></i>)}</div><span>SIGNAL / RHYTHM</span></div>
+                    </div>
+                    <div class="casePreviewRail"><i></i><i></i><i></i><i></i><i></i></div>
+                  </div>
+                ) : work.visual === "story" ? (
+                  <div class="projectShowcase projectShowcase--story projectShowcase--placeholder" data-showcase-gallery>
+                    <div class="projectShowcaseHead"><span>16:9 / FULL FORMAT</span><span data-showcase-counter>01 / {String(filmPreviewScenes.length).padStart(2, "0")}</span></div>
+                    <div class="projectShowcaseStage">
+                      {filmPreviewScenes.map((scene, index) => (
+                        <div class={`projectShowcaseSlide filmScene filmScene--${scene.art}${index === 0 ? " isActive" : ""}`} data-showcase-item aria-hidden={index === 0 ? "false" : "true"}>
+                          <div class="filmSceneGraphic" aria-hidden="true"><i></i><i></i><i></i></div>
+                          <strong class="filmSceneWord">{scene.word}</strong>
+                          <div class="projectShowcaseCaption"><span>{scene.label}</span><strong>{scene.title}</strong></div>
+                        </div>
+                      ))}
+                    </div>
+                    <div class="projectShowcaseControls">
+                      <button type="button" data-showcase-prev aria-label="Предыдущий формат">←</button>
+                      <div class="projectShowcaseTabs">
+                        {filmPreviewScenes.map((scene, index) => (
+                          <button type="button" data-showcase-tab data-showcase-index={index} aria-label={`Показать формат «${scene.title}»`} aria-pressed={index === 0 ? "true" : "false"}><span>{String(index + 1).padStart(2, "0")}</span><b>{scene.title}</b></button>
+                        ))}
+                      </div>
+                      <button type="button" data-showcase-next aria-label="Следующий формат">→</button>
+                    </div>
+                  </div>
+                ) : (
+                  <div class="casePreview casePreviewSocial" aria-hidden="true">
+                    <div class="casePreviewTop"><span>VERTICAL / 02</span><span>9:16 / SOCIAL</span></div>
+                    <div class="reelMomentDeck">
+                      <div class="reelMoment reelMomentOne"><span>01</span><strong>HOOK</strong><i></i></div>
+                      <div class="reelMoment reelMomentTwo"><span>02</span><strong>PACE</strong><i></i></div>
+                      <div class="reelMoment reelMomentThree"><span>03</span><strong>CTA</strong><i></i></div>
+                    </div>
+                    <div class="casePreviewRail"><i></i><i></i><i></i><i></i><i></i></div>
                   </div>
                 )}
                 <span class="archiveNumber">{work.number}</span>
               </div>
               <div class="archiveContent">
-                <p>{work.type}</p>
+                <div class="archiveMeta">
+                  <p>{work.type}</p>
+                  <span>{[work.client, work.year].filter(Boolean).join(" / ")}</span>
+                </div>
                 <h3>{work.title}</h3>
                 <span>{work.description}</span>
-                <i>↗</i>
+                {work.link && (
+                  <a class="archiveCaseLink" href={work.link} target="_blank" rel="noreferrer">Открыть проект <i>↗</i></a>
+                )}
               </div>
             </article>
           ))}
@@ -297,19 +400,19 @@ const structuredData = {
       </section>
 
       <section class="services" aria-labelledby="services-title">
-        <div class="servicesHeader"><p>05 / WHAT I DO</p><h2 id="services-title">От сырого материала<br />до точного впечатления.</h2></div>
+        <div class="servicesHeader"><p>05 / FORMATS</p><h2 id="services-title">Выберите формат.<br />Макс соберёт остальное.</h2></div>
         <div class="serviceTimeline">
           <div class="timelineRuler" aria-hidden="true">{Array.from({ length: 17 }).map((_, index) => <i><span>{String(index * 2).padStart(2, "0")}</span></i>)}</div>
           <div class="timelinePlayhead" aria-hidden="true"><i></i></div>
           {services.map((service, index) => (
-            <article class="serviceTrack" data-reveal style={`--track: ${index}`}>
+            <button class="serviceTrack" type="button" data-reveal data-open-contact data-service-format={service.format} style={`--track: ${index}`}>
               <span class="serviceIndex">{service.index}</span>
               <div class="serviceInfo"><h3>{service.title}</h3><p>{service.text}</p></div>
               <div class="serviceLane" aria-hidden="true">
                 <i class="timelineClip clipA"></i><i class="timelineClip clipB"></i><i class="timelineClip clipC"></i>
               </div>
               <i class="serviceArrow">↗</i>
-            </article>
+            </button>
           ))}
         </div>
       </section>
@@ -333,31 +436,99 @@ const structuredData = {
 
       <section class="about" id="about">
         <div class="aboutPortrait" data-reveal>
-          <Image src={maximPhoto} alt="Максим Рыжиков — motion-дизайнер и видеомонтажёр" widths={[560, 840, 1120]} sizes="(max-width: 900px) 100vw, 46vw" quality={80} loading="lazy" />
+          <Image src={maximPhoto} alt={`${siteData.owner.name} — ${siteData.owner.role}`} widths={[560, 840, 1120]} sizes="(max-width: 900px) 100vw, 46vw" quality={80} loading="lazy" />
           <div class="portraitFrame" aria-hidden="true"><span>REC</span><span>00:03:24:12</span></div>
         </div>
         <div class="aboutCopy" data-reveal>
-          <p>07 / THE AUTHOR</p><h2>Максим<br />Рыжиков</h2>
-          <p class="aboutLead">Видеомонтажёр и motion-дизайнер. Работаю с ритмом, графикой и звуком — от короткого формата до сложного многокамерного монтажа.</p>
-          <div class="aboutFacts"><span>Premiere Pro</span><span>After Effects</span><span>Photoshop</span><span>Audition</span></div>
+          <p>07 / THE AUTHOR</p><h2>{siteData.owner.name}</h2>
+          <p class="aboutLead">{siteData.about.lead}</p>
+          <div class="aboutFacts">{siteData.about.tools.map((tool) => <span>{tool}</span>)}</div>
         </div>
       </section>
 
       <section class="contact" id="contact">
-        <div class="contactOrbit" aria-hidden="true"></div><p>Есть идея?</p><h2>Давайте придадим<br />ей движение.</h2>
-        <a class="contactLink magnetic" href={`mailto:${contactEmail}`}><span>Начать проект</span><i>↗</i></a>
+        <div class="contactOrbit" aria-hidden="true"></div><p>{siteData.contact.eyebrow}</p><h2>{siteData.contact.title}</h2>
+        <button class="contactLink magnetic" type="button" data-open-contact><span>Начать проект</span><i>↗</i></button>
         <div class="contactDetails">
           <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
-          <span>В письме достаточно указать задачу, формат, сроки и приложить исходники.</span>
+          <span>{siteData.contact.hint}</span>
         </div>
         <footer><span>KAIROS © 2026</span><span>MOTION DESIGN / VIDEO EDITING</span><a href="#top">Наверх ↑</a></footer>
       </section>
     </main>
 
+    <dialog class="contactDialog" data-contact-dialog aria-labelledby="contact-dialog-title">
+      <div class="contactDialogShell">
+        <div class="contactDialogHead">
+          <div>
+            <p>KAIROS / PROJECT BRIEF</p>
+            <h2 id="contact-dialog-title">Обсудим<br />ваш проект.</h2>
+            <span class="contactDialogLead">Выберите формат и объём — ориентир по стоимости и сроку обновится автоматически.</span>
+          </div>
+          <button class="dialogClose" type="button" data-close-contact aria-label="Закрыть форму"><i></i><i></i></button>
+        </div>
+        <form class="projectForm" name="project-request" method="POST" action="/thanks/" data-netlify="true" netlify-honeypot="bot-field" data-project-form>
+          <input type="hidden" name="form-name" value="project-request" />
+          <input type="hidden" name="estimated-budget" value="4 000 ₽" data-estimate-field />
+          <input type="hidden" name="selected-scope" value="1 Reels / Shorts" data-scope-field />
+          <input type="hidden" name="recommended-deadline" value="" data-recommended-deadline />
+          <p class="formHoneypot" aria-hidden="true"><label>Не заполняйте это поле <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+          <label><span>Как вас зовут *</span><input type="text" name="name" autocomplete="name" required placeholder="Имя или компания" /></label>
+          <label><span>Как связаться *</span><input type="text" name="contact" autocomplete="email" required placeholder="Email или Telegram" /></label>
+          <fieldset class="formFormats formWide">
+            <legend>Что нужно сделать *</legend>
+            <div class="formatOptions">
+              <label class="formatOption">
+                <input type="radio" name="project-format" value="Reels / Shorts" checked data-project-format="reels" />
+                <span><i>01</i><strong>Reels / Shorts</strong><small>4 000 ₽ за ролик</small></span>
+              </label>
+              <label class="formatOption">
+                <input type="radio" name="project-format" value="Горизонтальное видео" data-project-format="horizontal" />
+                <span><i>02</i><strong>Горизонтальное видео</strong><small>1 500 ₽ за минуту</small></span>
+              </label>
+              <label class="formatOption">
+                <input type="radio" name="project-format" value="Съёмка + сценарий" data-project-format="production" />
+                <span><i>03</i><strong>Съёмка + сценарий</strong><small>Индивидуальный расчёт</small></span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="formVolumePanel formWide" data-volume-panel="reels">
+            <label><span>Количество роликов</span><span class="quantityControl"><button type="button" data-quantity-step="-1" aria-label="Уменьшить количество">−</button><input type="number" name="reels-quantity" value="1" min="1" max="50" inputmode="numeric" data-reels-quantity /><button type="button" data-quantity-step="1" aria-label="Увеличить количество">+</button></span></label>
+            <p><strong>Пакет 10 роликов — 30 000 ₽</strong><span>Экономия 10 000 ₽</span></p>
+          </div>
+          <div class="formVolumePanel formWide" data-volume-panel="horizontal" hidden>
+            <label><span>Хронометраж, минут</span><span class="quantityControl"><button type="button" data-minute-step="-1" aria-label="Уменьшить хронометраж">−</button><input type="number" name="video-minutes" value="1" min="1" max="180" inputmode="numeric" data-video-minutes disabled /><button type="button" data-minute-step="1" aria-label="Увеличить хронометраж">+</button></span></label>
+            <p><strong>1 500 ₽ за готовую минуту</strong><span>Точная стоимость зависит от материала и графики</span></p>
+          </div>
+          <div class="formVolumePanel formVolumePanelCustom formWide" data-volume-panel="production" hidden>
+            <p><strong>Сценарий, съёмка и монтаж под ключ</strong><span>Стоимость обсудим после уточнения задачи, команды и локации</span></p>
+          </div>
+
+          <label class="formWide"><span>Комментарий к задаче *</span><textarea name="brief" rows="4" required placeholder="Площадка, стилистика, ссылки на примеры и объём исходников"></textarea></label>
+          <label class="deadlineField"><span class="formFieldHead">Желаемый срок <small data-deadline-hint>Ближайший срок рассчитывается</small></span><input type="date" name="deadline" required data-deadline-input /></label>
+          <div class="budgetEstimate" aria-live="polite" aria-atomic="true">
+            <span>Предварительный расчёт</span>
+            <strong data-estimate-price>4 000 ₽</strong>
+            <small data-estimate-caption>1 ролик · базовый монтаж и motion</small>
+          </div>
+          <label class="formConsent formWide"><input type="checkbox" name="consent" required /><span>Согласен на обработку данных для ответа по этому проекту.</span></label>
+          <div class="formFooter formWide">
+            <button type="submit">
+              <span class="formSubmitText"><strong>Отправить заявку</strong><small>Макс получит расчёт и ваш бриф</small></span>
+              <i>↗</i>
+            </button>
+            <a href={`mailto:${contactEmail}`}><span>Можно написать напрямую</span>{contactEmail}</a>
+          </div>
+        </form>
+      </div>
+    </dialog>
+
     <script>
       const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
       const lerp = (from, to, progress) => from + (to - from) * progress;
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const allowPointerEffects = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
       const progressBar = document.querySelector(".pageProgress span");
       const aura = document.querySelector(".pointerAura");
       const hero = document.querySelector(".hero");
@@ -368,12 +539,14 @@ const structuredData = {
       const tunnelLine = document.querySelector(".tunnelLine span");
       const scatterScene = document.querySelector(".scatterScene");
       const scatterLetters = [...document.querySelectorAll("[data-scatter]")];
-      const identityCanvas = document.querySelector("[data-logo-canvas]");
+      const identityCanvas = document.querySelector("[data-style-canvas]");
       const servicesSection = document.querySelector(".services");
       const timelinePlayhead = document.querySelector(".timelinePlayhead");
       const siteTimecode = document.querySelector("[data-site-timecode]");
       const scatterClock = document.querySelector("[data-scatter-clock]");
       let pointerX = 0, pointerY = 0, rafPending = false;
+      let tunnelProgressMax = 0;
+      let tunnelCompleted = false;
 
       function formatTimecode(totalFrames) {
         const fps = 24;
@@ -391,6 +564,20 @@ const structuredData = {
         return clamp(-rect.top / Math.max(1, element.offsetHeight - window.innerHeight));
       }
 
+      function completeTunnelSection() {
+        if (!tunnel || tunnelCompleted) return;
+        tunnelCompleted = true;
+        const previousHeight = tunnel.offsetHeight;
+        const previousScrollY = window.scrollY;
+        tunnel.classList.add("isComplete");
+        const heightDelta = previousHeight - tunnel.offsetHeight;
+        if (heightDelta <= 0) return;
+        const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+        document.documentElement.style.scrollBehavior = "auto";
+        window.scrollTo(0, Math.max(0, previousScrollY - heightDelta));
+        document.documentElement.style.scrollBehavior = previousScrollBehavior;
+      }
+
       function updateScene() {
         rafPending = false;
         const scrollMax = document.documentElement.scrollHeight - window.innerHeight;
@@ -399,27 +586,29 @@ const structuredData = {
         if (siteTimecode) siteTimecode.textContent = formatTimecode(pageProgress * 24 * 96);
         if (!reducedMotion && hero && heroStage) {
           const heroProgress = clamp(-hero.getBoundingClientRect().top / Math.max(1, hero.offsetHeight));
-          heroStage.style.setProperty("--hero-y", `${heroProgress * -90}px`);
-          heroStage.style.setProperty("--hero-scale", String(1 - heroProgress * 0.14));
-          heroStage.style.setProperty("--hero-opacity", String(1 - heroProgress * 0.72));
-          heroStage.style.setProperty("--rx", `${pointerY * -4}deg`);
-          heroStage.style.setProperty("--ry", `${pointerX * 5}deg`);
+          heroStage.style.setProperty("--hero-x", `${pointerX * 10}px`);
+          heroStage.style.setProperty("--hero-y", `${pointerY * 7 - heroProgress * 22}px`);
+          heroStage.style.setProperty("--hero-scale", String(1.035 + heroProgress * 0.075));
+          heroStage.style.setProperty("--hero-opacity", String(1 - heroProgress * 0.45));
         }
         if (!reducedMotion && tunnel) {
-          const progress = sectionProgress(tunnel);
-          const spread = lerp(0.78, 1.18, Math.sin(progress * Math.PI));
+          tunnelProgressMax = Math.max(tunnelProgressMax, sectionProgress(tunnel));
+          if (tunnelProgressMax >= 0.995) tunnelProgressMax = 1;
+          const progress = tunnelProgressMax;
+          const easedProgress = progress * progress * (3 - 2 * progress);
+          const spread = lerp(0.82, 1.04, easedProgress);
           tunnelCards.forEach((card, index) => {
             const offset = index - (tunnelCards.length - 1) / 2;
-            const x = offset * Math.min(window.innerWidth * 0.16, 215) * spread;
-            const y = Math.abs(offset) * 20 - Math.sin(progress * Math.PI) * 42;
-            const z = -Math.abs(offset) * 165 + Math.sin(progress * Math.PI) * 150;
-            const rotateY = offset * -8 + (progress - 0.5) * offset * 7;
-            const rotateZ = offset * 2.2 * (1 - progress);
-            const endFlight = clamp((progress - 0.72) / 0.28);
-            card.style.transform = `translate3d(calc(-50% + ${x + offset * endFlight * 165}px), calc(-50% + ${y}px), ${z + endFlight * (130 - Math.abs(offset) * 28)}px) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`;
+            const x = offset * Math.min(window.innerWidth * 0.16, 205) * spread;
+            const y = Math.abs(offset) * 19 - easedProgress * 26;
+            const z = -Math.abs(offset) * 150 + easedProgress * (118 - Math.abs(offset) * 14);
+            const rotateY = offset * lerp(-8, -3, easedProgress);
+            const rotateZ = offset * lerp(1.8, 0.15, easedProgress);
+            card.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), ${z}px) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`;
           });
           if (tunnelLine) tunnelLine.style.transform = `scaleX(${progress})`;
           if (tunnelCurrent) tunnelCurrent.textContent = String(Math.min(5, Math.floor(progress * 5) + 1)).padStart(2, "0");
+          if (progress === 1) completeTunnelSection();
         }
         if (!reducedMotion && scatterScene) {
           const progress = sectionProgress(scatterScene);
@@ -440,10 +629,10 @@ const structuredData = {
         if (!reducedMotion && identityCanvas) {
           const rect = identityCanvas.getBoundingClientRect();
           const progress = clamp((window.innerHeight - rect.top) / (window.innerHeight + rect.height));
-          identityCanvas.style.setProperty("--logo-shift", `${(1 - progress) * 70}px`);
-          identityCanvas.style.setProperty("--logo-rotate", `${(1 - progress) * 2}deg`);
-          identityCanvas.style.setProperty("--logo-opacity", String(0.25 + progress * 0.75));
-          identityCanvas.style.setProperty("--logo-scale", String(0.86 + progress * 0.14));
+          identityCanvas.style.setProperty("--logo-shift", `${(1 - progress) * 32}px`);
+          identityCanvas.style.setProperty("--logo-rotate", `${(1 - progress) * 0.8}deg`);
+          identityCanvas.style.setProperty("--logo-opacity", String(0.76 + progress * 0.24));
+          identityCanvas.style.setProperty("--logo-scale", String(0.97 + progress * 0.03));
         }
         if (!reducedMotion && servicesSection && timelinePlayhead) {
           const rect = servicesSection.getBoundingClientRect();
@@ -455,33 +644,163 @@ const structuredData = {
       function requestUpdate() { if (!rafPending) { rafPending = true; requestAnimationFrame(updateScene); } }
       window.addEventListener("scroll", requestUpdate, { passive: true });
       window.addEventListener("resize", requestUpdate);
-      window.addEventListener("pointermove", (event) => {
-        pointerX = event.clientX / window.innerWidth - 0.5; pointerY = event.clientY / window.innerHeight - 0.5;
-        if (aura) { aura.style.setProperty("--x", `${event.clientX}px`); aura.style.setProperty("--y", `${event.clientY}px`); }
-        requestUpdate();
-      }, { passive: true });
+      if (allowPointerEffects) {
+        window.addEventListener("pointermove", (event) => {
+          pointerX = event.clientX / window.innerWidth - 0.5; pointerY = event.clientY / window.innerHeight - 0.5;
+          if (aura) { aura.style.setProperty("--x", `${event.clientX}px`); aura.style.setProperty("--y", `${event.clientY}px`); }
+          requestUpdate();
+        }, { passive: true });
+      }
 
       const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
         if (entry.isIntersecting) { entry.target.classList.add("isVisible"); observer.unobserve(entry.target); }
       }), { threshold: 0.14, rootMargin: "0px 0px -5%" });
       document.querySelectorAll("[data-reveal]").forEach((element) => observer.observe(element));
 
-      document.querySelectorAll(".magnetic").forEach((element) => {
-        element.addEventListener("pointermove", (event) => {
-          if (reducedMotion) return;
-          const rect = element.getBoundingClientRect();
-          element.style.transform = `translate(${(event.clientX - rect.left - rect.width / 2) * 0.12}px, ${(event.clientY - rect.top - rect.height / 2) * 0.12}px)`;
+      const animationObserver = new IntersectionObserver((entries) => entries.forEach((entry) => {
+        entry.target.classList.toggle("animationActive", entry.isIntersecting && !document.hidden);
+      }), { threshold: 0, rootMargin: "18% 0px" });
+      const animationRegions = [...document.querySelectorAll(".hero, .workTunnel, .identity, .archive, .about, .contact")];
+      animationRegions.forEach((region) => animationObserver.observe(region));
+
+      const projectVideos = [...document.querySelectorAll("[data-project-video], [data-motion-video]")];
+      if (projectVideos.length) {
+        if (reducedMotion) projectVideos.forEach((video) => { video.pause(); video.removeAttribute("autoplay"); });
+        const videoObserver = new IntersectionObserver((entries) => entries.forEach((entry) => {
+          const video = entry.target;
+          if (entry.isIntersecting && !reducedMotion && !document.hidden) video.play().catch(() => {});
+          else video.pause();
+        }), { threshold: 0.46 });
+        projectVideos.forEach((video) => videoObserver.observe(video));
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden) projectVideos.forEach((video) => video.pause());
         });
-        element.addEventListener("pointerleave", () => { element.style.transform = ""; });
+      }
+
+      const showcaseGalleryControllers = [...document.querySelectorAll("[data-showcase-gallery]")].map((gallery) => {
+        const items = [...gallery.querySelectorAll("[data-showcase-item]")];
+        const tabs = [...gallery.querySelectorAll("[data-showcase-tab]")];
+        const counter = gallery.querySelector("[data-showcase-counter]");
+        const soundButton = gallery.querySelector("[data-showcase-sound]");
+        const soundLabel = soundButton?.querySelector("span");
+        let activeIndex = 0;
+        let inView = false;
+        let soundEnabled = false;
+
+        const sync = () => {
+          items.forEach((item, index) => {
+            const isActive = index === activeIndex;
+            item.classList.toggle("isActive", isActive);
+            item.setAttribute("aria-hidden", String(!isActive));
+            const video = item.querySelector("video");
+            if (!video) return;
+            video.muted = !soundEnabled || !isActive;
+            if (isActive) video.preload = "metadata";
+            if (isActive && inView && !reducedMotion && !document.hidden) video.play().catch(() => {});
+            else video.pause();
+          });
+          tabs.forEach((tab, index) => tab.setAttribute("aria-pressed", String(index === activeIndex)));
+          if (counter) counter.textContent = `${String(activeIndex + 1).padStart(2, "0")} / ${String(items.length).padStart(2, "0")}`;
+          if (soundButton) {
+            soundButton.setAttribute("aria-pressed", String(soundEnabled));
+            soundButton.setAttribute("aria-label", soundEnabled ? "Выключить звук" : "Включить звук");
+          }
+          if (soundLabel) soundLabel.textContent = soundEnabled ? "Звук вкл." : "Звук выкл.";
+        };
+
+        const select = (index) => {
+          activeIndex = (index + items.length) % items.length;
+          sync();
+        };
+
+        tabs.forEach((tab, index) => tab.addEventListener("click", () => select(index)));
+        gallery.querySelector("[data-showcase-prev]")?.addEventListener("click", () => select(activeIndex - 1));
+        gallery.querySelector("[data-showcase-next]")?.addEventListener("click", () => select(activeIndex + 1));
+        soundButton?.addEventListener("click", () => { soundEnabled = !soundEnabled; sync(); });
+
+        const showcaseObserver = new IntersectionObserver(([entry]) => {
+          inView = entry.isIntersecting;
+          sync();
+        }, { threshold: 0.3 });
+        showcaseObserver.observe(gallery);
+        sync();
+        return { sync };
       });
+      document.addEventListener("visibilitychange", () => showcaseGalleryControllers.forEach((controller) => controller.sync()));
+
+      const reelGalleryControllers = [...document.querySelectorAll("[data-reel-gallery]")].map((gallery) => {
+        const items = [...gallery.querySelectorAll("[data-reel-item]")];
+        const counter = gallery.querySelector("[data-reel-counter]");
+        const soundButton = gallery.querySelector("[data-reel-sound]");
+        const soundLabel = soundButton?.querySelector("span");
+        let activeIndex = 0;
+        let inView = false;
+        let soundEnabled = false;
+
+        const sync = () => {
+          items.forEach((item, index) => {
+            let position = index - activeIndex;
+            if (position > items.length / 2) position -= items.length;
+            if (position < -items.length / 2) position += items.length;
+            item.dataset.reelPosition = String(Math.max(-2, Math.min(2, position)));
+            item.setAttribute("aria-pressed", String(index === activeIndex));
+            const video = item.querySelector("video");
+            if (!video) return;
+            const isActive = index === activeIndex;
+            video.muted = !soundEnabled || !isActive;
+            if (isActive) video.preload = "metadata";
+            if (isActive && inView && !reducedMotion && !document.hidden) video.play().catch(() => {});
+            else video.pause();
+          });
+          if (counter) counter.textContent = `${String(activeIndex + 1).padStart(2, "0")} / ${String(items.length).padStart(2, "0")}`;
+          if (soundButton) {
+            soundButton.setAttribute("aria-pressed", String(soundEnabled));
+            soundButton.setAttribute("aria-label", soundEnabled ? "Выключить звук" : "Включить звук");
+          }
+          if (soundLabel) soundLabel.textContent = soundEnabled ? "Звук вкл." : "Звук выкл.";
+        };
+
+        const select = (index) => {
+          activeIndex = (index + items.length) % items.length;
+          sync();
+        };
+
+        items.forEach((item, index) => item.addEventListener("click", () => select(index)));
+        gallery.querySelector("[data-reel-prev]")?.addEventListener("click", () => select(activeIndex - 1));
+        gallery.querySelector("[data-reel-next]")?.addEventListener("click", () => select(activeIndex + 1));
+        soundButton?.addEventListener("click", () => { soundEnabled = !soundEnabled; sync(); });
+
+        const galleryObserver = new IntersectionObserver(([entry]) => {
+          inView = entry.isIntersecting;
+          sync();
+        }, { threshold: 0.34 });
+        galleryObserver.observe(gallery);
+        sync();
+        return { sync };
+      });
+      document.addEventListener("visibilitychange", () => reelGalleryControllers.forEach((controller) => controller.sync()));
+
+      if (allowPointerEffects && !reducedMotion) {
+        document.querySelectorAll(".magnetic").forEach((element) => {
+          element.addEventListener("pointermove", (event) => {
+            const rect = element.getBoundingClientRect();
+            element.style.transform = `translate(${(event.clientX - rect.left - rect.width / 2) * 0.12}px, ${(event.clientY - rect.top - rect.height / 2) * 0.12}px)`;
+          });
+          element.addEventListener("pointerleave", () => { element.style.transform = ""; });
+        });
+      }
 
       const menuButton = document.querySelector(".menuButton");
       const mobileNav = document.querySelector(".mobileNav");
+      const mainContent = document.querySelector("main");
+      const headerBrand = document.querySelector(".headerBrand");
       const closeMenu = () => {
         menuButton?.setAttribute("aria-expanded", "false");
         menuButton?.setAttribute("aria-label", "Открыть меню");
         mobileNav?.setAttribute("aria-hidden", "true");
-        if (mobileNav) mobileNav.inert = true;
+        mobileNav?.setAttribute("inert", "");
+        mainContent?.removeAttribute("inert");
+        headerBrand?.removeAttribute("inert");
         document.body.classList.remove("menuOpen");
       };
       menuButton?.addEventListener("click", () => {
@@ -489,8 +808,17 @@ const structuredData = {
         menuButton.setAttribute("aria-expanded", String(!open));
         menuButton.setAttribute("aria-label", open ? "Открыть меню" : "Закрыть меню");
         mobileNav?.setAttribute("aria-hidden", String(open));
-        if (mobileNav) mobileNav.inert = open;
+        if (open) mobileNav?.setAttribute("inert", "");
+        else mobileNav?.removeAttribute("inert");
+        if (open) {
+          mainContent?.removeAttribute("inert");
+          headerBrand?.removeAttribute("inert");
+        } else {
+          mainContent?.setAttribute("inert", "");
+          headerBrand?.setAttribute("inert", "");
+        }
         document.body.classList.toggle("menuOpen", !open);
+        if (!open) mobileNav?.querySelector("a")?.focus();
       });
       mobileNav?.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
       document.addEventListener("keydown", (event) => {
@@ -498,6 +826,143 @@ const structuredData = {
           closeMenu();
           menuButton.focus();
         }
+      });
+      window.matchMedia("(min-width: 901px)").addEventListener("change", (event) => {
+        if (event.matches) closeMenu();
+      });
+
+      const contactDialog = document.querySelector("[data-contact-dialog]");
+      const contactTriggers = [...document.querySelectorAll("[data-open-contact]")];
+      const contactClose = document.querySelector("[data-close-contact]");
+      const projectForm = document.querySelector("[data-project-form]");
+      const formatInputs = [...document.querySelectorAll("[data-project-format]")];
+      const volumePanels = [...document.querySelectorAll("[data-volume-panel]")];
+      const reelsQuantity = document.querySelector("[data-reels-quantity]");
+      const videoMinutes = document.querySelector("[data-video-minutes]");
+      const estimatePrice = document.querySelector("[data-estimate-price]");
+      const estimateCaption = document.querySelector("[data-estimate-caption]");
+      const estimateField = document.querySelector("[data-estimate-field]");
+      const scopeField = document.querySelector("[data-scope-field]");
+      const deadlineInput = document.querySelector("[data-deadline-input]");
+      const deadlineHint = document.querySelector("[data-deadline-hint]");
+      const recommendedDeadline = document.querySelector("[data-recommended-deadline]");
+      const rubleFormatter = new Intl.NumberFormat("ru-RU");
+      const deadlineFormatter = new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "long" });
+
+      const normalizeNumberInput = (input, fallback = 1) => {
+        if (!input) return fallback;
+        const min = Number(input.min) || fallback;
+        const max = Number(input.max) || Number.MAX_SAFE_INTEGER;
+        const value = Math.min(max, Math.max(min, Math.round(Number(input.value) || fallback)));
+        input.value = String(value);
+        return value;
+      };
+      const toDateValue = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      };
+      const getRecommendedDate = (days) => {
+        const date = new Date();
+        date.setHours(12, 0, 0, 0);
+        date.setDate(date.getDate() + days);
+        return date;
+      };
+      const getLeadDays = (format, quantity, minutes) => {
+        if (format === "production") return 14;
+        if (format === "horizontal") return minutes <= 5 ? 7 : minutes <= 15 ? 14 : 21;
+        if (quantity <= 3) return 7;
+        if (quantity <= 10) return 14;
+        return 14 + Math.ceil((quantity - 10) / 10) * 7;
+      };
+      const updateProjectCalculator = () => {
+        const selected = formatInputs.find((input) => input.checked);
+        const format = selected?.dataset.projectFormat || "reels";
+        const quantity = normalizeNumberInput(reelsQuantity);
+        const minutes = normalizeNumberInput(videoMinutes);
+
+        volumePanels.forEach((panel) => {
+          const active = panel.dataset.volumePanel === format;
+          panel.hidden = !active;
+          panel.querySelectorAll("input, button").forEach((control) => { control.disabled = !active; });
+        });
+
+        let priceText = "После брифа";
+        let caption = "Сценарий, съёмка и монтаж · точный расчёт после созвона";
+        let scope = "Съёмка + сценарий · индивидуальный объём";
+        if (format === "reels") {
+          const packages = Math.floor(quantity / 10);
+          const remainder = quantity % 10;
+          const price = packages * 30000 + remainder * 4000;
+          priceText = `${rubleFormatter.format(price)} ₽`;
+          caption = quantity === 1
+            ? "1 ролик · монтаж и motion"
+            : `${quantity} роликов · ${packages ? "пакетная скидка учтена" : "4 000 ₽ за ролик"}`;
+          scope = `${quantity} Reels / Shorts`;
+        } else if (format === "horizontal") {
+          const price = minutes * 1500;
+          priceText = `${rubleFormatter.format(price)} ₽`;
+          caption = `${minutes} мин. готового видео · 1 500 ₽ за минуту`;
+          scope = `Горизонтальное видео · ${minutes} мин.`;
+        }
+
+        if (estimatePrice) estimatePrice.textContent = priceText;
+        if (estimateCaption) estimateCaption.textContent = caption;
+        if (estimateField) estimateField.value = priceText;
+        if (scopeField) scopeField.value = scope;
+
+        const leadDays = getLeadDays(format, quantity, minutes);
+        const recommended = getRecommendedDate(leadDays);
+        const dateValue = toDateValue(recommended);
+        if (deadlineInput) {
+          deadlineInput.min = dateValue;
+          if (!deadlineInput.value || deadlineInput.value < dateValue) deadlineInput.value = dateValue;
+        }
+        const humanDate = deadlineFormatter.format(recommended);
+        if (deadlineHint) deadlineHint.textContent = `Ближайший срок — до ${humanDate}`;
+        if (recommendedDeadline) recommendedDeadline.value = `До ${humanDate} · ориентир ${leadDays} дней`;
+      };
+
+      formatInputs.forEach((input) => input.addEventListener("change", updateProjectCalculator));
+      reelsQuantity?.addEventListener("input", updateProjectCalculator);
+      videoMinutes?.addEventListener("input", updateProjectCalculator);
+      document.querySelectorAll("[data-quantity-step]").forEach((button) => button.addEventListener("click", () => {
+        if (!reelsQuantity) return;
+        reelsQuantity.value = String(normalizeNumberInput(reelsQuantity) + Number(button.dataset.quantityStep));
+        updateProjectCalculator();
+      }));
+      document.querySelectorAll("[data-minute-step]").forEach((button) => button.addEventListener("click", () => {
+        if (!videoMinutes) return;
+        videoMinutes.value = String(normalizeNumberInput(videoMinutes) + Number(button.dataset.minuteStep));
+        updateProjectCalculator();
+      }));
+      projectForm?.addEventListener("reset", () => window.setTimeout(updateProjectCalculator));
+      updateProjectCalculator();
+
+      let lastContactTrigger = null;
+      const openContactDialog = (trigger) => {
+        if (!contactDialog?.showModal) return;
+        lastContactTrigger = trigger;
+        closeMenu();
+        const requestedFormat = trigger?.dataset.serviceFormat;
+        if (requestedFormat) {
+          const formatInput = formatInputs.find((input) => input.dataset.projectFormat === requestedFormat);
+          if (formatInput) {
+            formatInput.checked = true;
+            updateProjectCalculator();
+          }
+        }
+        contactDialog.showModal();
+        document.body.classList.add("dialogOpen");
+        contactDialog.querySelector("input[name='name']")?.focus();
+      };
+      contactTriggers.forEach((trigger) => trigger.addEventListener("click", () => openContactDialog(trigger)));
+      contactClose?.addEventListener("click", () => contactDialog?.close());
+      contactDialog?.addEventListener("click", (event) => { if (event.target === contactDialog) contactDialog.close(); });
+      contactDialog?.addEventListener("close", () => {
+        document.body.classList.remove("dialogOpen");
+        lastContactTrigger?.focus();
       });
       requestUpdate();
     </script>

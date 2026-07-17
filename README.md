@@ -1,43 +1,60 @@
-# Astro Starter Kit: Minimal
+# KAIROS — motion portfolio
+
+Рекламный сайт Максима Рыжикова: motion-дизайн, видеомонтаж, sound и визуальная айдентика.
+
+## Запуск
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run dev
+npm run build
+npm run preview
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Production-сборка появляется в `dist/`. Требуется Node.js 22 или новее.
 
-## 🚀 Project Structure
+## Где лежит контент
 
-Inside of your Astro project, you'll see the following folders and files:
+- `src/data/site.json` — SEO, имя, email, первый экран, услуги, процесс, текст об авторе и контакты.
+- `src/data/projects/*.json` — отдельные проекты.
+- `public/uploads/` — загруженные обложки и видео.
+- `src/assets/maxim-ryzhikov.webp` — фотография Максима.
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+Карточка проекта поддерживает три состояния:
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+1. CSS-заглушка — пока `image` и `video` пустые.
+2. Изображение — заполнено поле `image`.
+3. Видео — заполнено поле `video`; `poster` используется как обложка до воспроизведения.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Панель управления
 
-Any static assets, like images, can be placed in the `public/` directory.
+Интерфейс подготовлен по адресу `/admin/` на Decap CMS. Он редактирует JSON-файлы и загружает медиа в репозиторий, после чего хостинг автоматически пересобирает сайт.
 
-## 🧞 Commands
+Это отдельная редакторская панель, а не личный кабинет внутри лендинга. Владелец входит через GitHub и редактирует только три карточки блока «04 / SELECTED WORKS»: изображения айдентики, подборку Reels и полноформатные видео. Остальные секции сайта в панели скрыты.
 
-All commands are run from the root of the project, from a terminal:
+Для активации на Netlify:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+1. Подключить репозиторий `xiseshtormx/maksim-motion-site` и выполнить первый deploy.
+2. Создать GitHub OAuth App с callback `https://api.netlify.com/auth/done`.
+3. В Netlify открыть `Project configuration → Access & security → OAuth` и установить GitHub provider, указав Client ID и Client Secret.
+4. Попросить Максима создать бесплатный GitHub-аккаунт и добавить его collaborator с правом записи в репозиторий.
+5. Открыть `https://ваш-домен/admin/`, войти через GitHub и обновить тестовую карточку портфолио.
+6. После первого deploy проверить форму `project-request` и включить уведомления о новых заявках на рабочую почту.
 
-## 👀 Want to learn more?
+Форма `project-request` уже передаёт не только контакты и комментарий, но и выбранный формат, объём, рассчитанный ориентир бюджета, желаемую и рекомендованную даты. На Netlify письмо с этими полями настраивается в `Forms → Form notifications → Email notification` — секреты и сторонние скрипты для почтового уведомления в браузере не нужны.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Для будущего уведомления в Telegram интерфейс менять не потребуется: отправку можно дополнить Netlify Function, которая получит те же поля формы и вызовет Telegram Bot API. Токен бота и `chat_id` должны храниться только в переменных окружения хостинга, не в клиентском JavaScript.
+
+Файл `netlify.toml` уже содержит команду сборки и папку публикации. Если будет выбран другой хостинг, интерфейс и контентная модель сохраняются, но для Decap CMS понадобится OAuth-настройка этого хостинга.
+
+На Netlify переменная `URL` автоматически задаёт основной домен сборки. Из неё сайт формирует canonical, абсолютную OG-обложку и `sitemap-index.xml`; страница благодарности исключена из sitemap.
+
+## Перед публикацией
+
+- заменить тестовый `hello@kairos-motion.ru` в `src/data/site.json` на реальный адрес;
+- добавить домен и OG-обложку после их утверждения;
+- загрузить финальные проекты и заполнить для каждого понятное описание кадра (`alt`);
+- использовать WebP/JPEG для постеров и MP4 H.264 для видео;
+- держать короткие фоновые видео без звука и по возможности до 8–10 МБ.
+
+Подробная инструкция для владельца находится в `OWNER-GUIDE.md`.

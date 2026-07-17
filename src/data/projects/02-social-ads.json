@@ -1,0 +1,36 @@
+{
+  "order": 2,
+  "title": "Реклама и Reels",
+  "client": "MAXIM RYZIKOV",
+  "year": 2026,
+  "type": "Reels / Shorts / Ads",
+  "description": "Вертикальные ролики с плотным монтажом, крупной типографикой и графикой, которая помогает быстро раскрыть тему.",
+  "visual": "signal",
+  "mediaFit": "contain",
+  "published": true,
+  "image": "",
+  "video": "",
+  "poster": "",
+  "clips": [
+    {
+      "title": "Переимплантит",
+      "video": "/uploads/reels/implant-preview.mp4",
+      "poster": "/uploads/reels/implant-poster.webp",
+      "alt": "Информационный стоматологический Reels о переимплантите."
+    },
+    {
+      "title": "Прямой наконечник",
+      "video": "/uploads/reels/dental-burs-preview.mp4",
+      "poster": "/uploads/reels/dental-burs-poster.webp",
+      "alt": "Стоматологический Reels о борах для прямого наконечника."
+    },
+    {
+      "title": "Рашгард",
+      "video": "/uploads/reels/rashguard-preview.mp4",
+      "poster": "/uploads/reels/rashguard-poster.webp",
+      "alt": "Рекламный Reels с motion-графикой для карточки рашгарда."
+    }
+  ],
+  "alt": "",
+  "link": ""
+}

@@ -1,0 +1,77 @@
+backend:
+  name: github
+  repo: xiseshtormx/maksim-motion-site
+  branch: main
+
+local_backend: true
+publish_mode: simple
+media_folder: public/uploads
+public_folder: /uploads
+logo_url: /favicon.svg
+
+collections:
+  - name: projects
+    label: Портфолио — блок 04
+    label_singular: Карточка портфолио
+    folder: src/data/projects
+    create: false
+    delete: false
+    format: json
+    extension: json
+    identifier_field: title
+    slug: "{{fields.order}}-{{slug}}"
+    summary: "{{fields.order}} — {{fields.title}}"
+    sortable_fields: [order, title]
+    fields:
+      - { label: Порядок, name: order, widget: number, value_type: int, min: 1 }
+      - { label: Название, name: title, widget: string }
+      - { label: Клиент / бренд, name: client, widget: string, required: false }
+      - { label: Год, name: year, widget: number, value_type: int, min: 2000, max: 2100, default: 2026 }
+      - { label: Формат / категория, name: type, widget: string }
+      - { label: Описание, name: description, widget: text }
+      - label: Стиль заглушки
+        name: visual
+        widget: select
+        default: brand
+        options:
+          - { label: Айдентика, value: brand }
+          - { label: Сигнал / реклама, value: signal }
+          - { label: История, value: story }
+      - label: Отображение видео / обложки
+        name: mediaFit
+        widget: select
+        default: cover
+        hint: "Для Reels выберите «Показать полностью», чтобы вертикальный кадр не обрезался."
+        options:
+          - { label: На весь кадр, value: cover }
+          - { label: Показать полностью, value: contain }
+      - { label: Показывать на сайте, name: published, widget: boolean, default: true }
+      - { label: Обложка, name: image, widget: image, required: false }
+      - { label: Короткое видео-превью MP4/WebM, name: video, widget: file, required: false, hint: "Без звука, желательно до 8–10 МБ. Для длинного ролика используйте ссылку на полный кейс." }
+      - { label: Постер видео, name: poster, widget: image, required: false, hint: "Обязательно добавьте для видео, чтобы карточка не была пустой до загрузки." }
+      - label: Галерея проекта
+        name: showcase
+        widget: list
+        required: false
+        max: 8
+        hint: "Для айдентики добавляйте изображения, для полноформатных работ — видео и постеры. Элементы можно перетаскивать и менять местами."
+        fields:
+          - { label: Короткое название, name: title, widget: string }
+          - { label: Техническая подпись, name: label, widget: string, required: false, hint: "Например: PRIMARY / LIGHT или FILM / 00:30" }
+          - { label: Изображение, name: image, widget: image, required: false }
+          - { label: Видео MP4/WebM, name: video, widget: file, required: false }
+          - { label: Постер видео, name: poster, widget: image, required: false }
+          - { label: Описание для доступности, name: alt, widget: string, required: false }
+      - label: Подборка Reels
+        name: clips
+        widget: list
+        required: false
+        max: 6
+        hint: "Добавьте несколько коротких вертикальных роликов. На сайте они появятся в переключаемой видеоподборке."
+        fields:
+          - { label: Название ролика, name: title, widget: string }
+          - { label: Видео MP4/WebM, name: video, widget: file, hint: "Оптимально: 720×1280 px и до 8 МБ." }
+          - { label: Постер, name: poster, widget: image, required: false }
+          - { label: Описание для доступности, name: alt, widget: string, required: false }
+      - { label: Описание изображения, name: alt, widget: string, required: false, hint: "Коротко опишите, что видно в кадре." }
+      - { label: Ссылка на полный кейс, name: link, widget: string, required: false, hint: "YouTube, Vimeo, Rutube, Behance или другая опубликованная страница." }

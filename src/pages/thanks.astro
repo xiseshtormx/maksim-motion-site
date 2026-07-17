@@ -1,0 +1,29 @@
+---
+import KairosLogo from "../components/KairosLogo.astro";
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#0b3e72" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Обращение отправлено — KAIROS</title>
+  </head>
+  <body>
+    <main>
+      <a class="brand" href="/" aria-label="KAIROS — на главную"><KairosLogo mode="compact" tone="light" /></a>
+      <div class="orbit" aria-hidden="true"></div>
+      <p>PROJECT REQUEST / RECEIVED</p>
+      <h1>Спасибо.<br />Макс получил задачу.</h1>
+      <span>Он посмотрит детали и свяжется с вами по указанному контакту.</span>
+      <a class="back" href="/">Вернуться на сайт <i>↗</i></a>
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#0b3e72;color:#f3efe5;font-family:"Arial Nova","Segoe UI",Arial,sans-serif}body{min-height:100svh}main{position:relative;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 22px;overflow:hidden;text-align:center}.brand{position:absolute;top:28px;left:32px;color:inherit}.brand .kairosLogo{font-size:5.4px}.orbit{position:absolute;width:min(82vw,980px);aspect-ratio:2.3;border:1px solid rgba(255,255,255,.18);border-radius:50%;transform:rotate(-6deg)}p,h1,span,.back{position:relative;z-index:2}p{margin:0 0 24px;color:rgba(255,255,255,.62);font-size:10px;font-weight:800;letter-spacing:.18em}h1{max-width:1100px;margin:0;font-size:clamp(54px,10vw,150px);font-weight:500;line-height:.88;letter-spacing:-.075em}main>span{max-width:520px;margin-top:28px;color:rgba(255,255,255,.72);font-size:16px;line-height:1.5}.back{min-height:58px;display:inline-flex;align-items:center;gap:24px;margin-top:42px;padding:6px 8px 6px 24px;border-radius:999px;background:#f3efe5;color:#0b0d0f;text-decoration:none;font-size:13px;font-weight:800}.back i{display:grid;width:46px;height:46px;place-items:center;border-radius:50%;background:#0b0d0f;color:#f3efe5;font-style:normal}@media(max-width:600px){.brand{top:22px;left:20px}h1{font-size:clamp(50px,17vw,82px)}main>span{font-size:14px}}
+</style>
