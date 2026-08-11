@@ -1,17 +1,17 @@
 {
+  "visual": "story",
+  "alt": "",
+  "client": "",
+  "poster": "",
+  "mediaFit": "cover",
+  "showcase": [],
+  "published": true,
   "order": 3,
   "title": "Полноформатные видео",
-  "client": "",
-  "year": 2026,
   "type": "Film / YouTube / Advertising",
-  "description": "Горизонтальные ролики, интервью и рекламные истории с выстроенной драматургией, графикой и звуком.",
-  "visual": "story",
-  "mediaFit": "cover",
-  "published": true,
-  "image": "",
+  "link": "https://web.telegram.org/a/progressive/document5465248749179675982",
   "video": "",
-  "poster": "",
-  "showcase": [],
-  "alt": "",
-  "link": ""
+  "image": "",
+  "description": "Горизонтальные ролики, интервью и рекламные истории с выстроенной драматургией, графикой и звуком.",
+  "year": 2026
 }
