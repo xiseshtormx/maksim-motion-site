@@ -1,21 +1,10 @@
 {
-  "order": 2,
-  "title": "Реклама и Reels",
-  "client": "МАКСИМ РЫЖИКОВ",
-  "year": 2026,
-  "type": "Reels / Shorts / Ads",
-  "description": "Вертикальные ролики с плотным монтажом, крупной типографикой и графикой, которая помогает быстро раскрыть тему.",
   "visual": "signal",
-  "mediaFit": "contain",
-  "published": true,
-  "image": "",
-  "video": "",
-  "poster": "",
   "clips": [
     {
-      "title": "Переимплантит",
-      "video": "/uploads/reels/implant-preview.mp4",
-      "poster": "/uploads/reels/implant-poster.webp",
+      "title": "Создание карточки",
+      "video": "/uploads/видос2.mp4",
+      "poster": "",
       "alt": "Информационный стоматологический Reels о переимплантите."
     },
     {
@@ -32,5 +21,16 @@
     }
   ],
   "alt": "",
-  "link": ""
+  "client": "МАКСИМ РЫЖИКОВ",
+  "poster": "",
+  "mediaFit": "contain",
+  "published": true,
+  "order": 2,
+  "title": "Реклама и Reels",
+  "type": "Reels / Shorts / Ads",
+  "link": "",
+  "video": "",
+  "image": "",
+  "description": "Вертикальные ролики с плотным монтажом, крупной типографикой и графикой, которая помогает быстро раскрыть тему.",
+  "year": 2026
 }
